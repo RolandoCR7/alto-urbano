@@ -386,7 +386,7 @@ const cardHTML = (p, extra = '') => {
 const bestRow = $('#bestRow');
 if (bestRow) {
   const rank = p => { const i = ['Más vendido', 'Bestia', 'Nuevo ingreso', 'Precio top'].indexOf(p.badge); return i < 0 ? 9 : i; };
-  bestRow.innerHTML = [...P].sort((a, b) => rank(a) - rank(b)).slice(0, 5).map(p => cardHTML(p)).join('');
+  bestRow.innerHTML = [...P].sort((a, b) => rank(a) - rank(b)).slice(0, 6).map(p => cardHTML(p)).join('');
   bindTilt(bestRow);
 }
 
@@ -536,7 +536,7 @@ if (brandsGrid) {
 const genGrid = $('#genGrid');
 if (genGrid) {
   const G = [
-    {g:'mujer', k:'Para ellas', t:'Perfumes Mujer', tone:'rose', ids:['delina', 'pinkmilk', 'sugarkisses']},
+    {g:'mujer', k:'Para ellas', t:'Perfumes Mujer', tone:'rose', ids:['jadore', 'lavieestbelle', 'delina']},
     {g:'hombre', k:'Para ellos', t:'Perfumes Hombre', tone:'sky', ids:['aventus', 'sauvageelixir', 'bleuparfum']},
     {g:'unisex', k:'Para todos', t:'Perfumes Unisex', tone:'sand', ids:['br540', 'erbapura', 'oudwood']},
   ];
@@ -591,7 +591,6 @@ if (pdp) {
           <img class="pimg" src="${p.cut}" alt="${p.house} ${p.name}">
           <img class="v-refl" src="${p.cut}" alt="" aria-hidden="true">
         </div>
-        <div class="pdp-seal" data-seal></div>
         <p class="pdp-hint">Pasa el cursor para ver el detalle del frasco</p>
       </div>
       <div class="pdp-info">
@@ -660,7 +659,7 @@ if (pdp) {
   if (!REDUCED) gsap.from('.pdp-media, .pdp-info > *', {y:30, autoAlpha:0, duration:1, stagger:.05, ease:'expo.out', clearProps:'all'});
   /* related: same family or house first */
   const rel = P.filter(x => x.id !== p.id).map(x => ({x, s:(x.house === p.house ? 2 : 0) + (x.family === p.family ? 2 : 0) + (x.cat === p.cat ? 1 : 0)}))
-    .sort((a, b) => b.s - a.s).slice(0, 5).map(r => r.x);
+    .sort((a, b) => b.s - a.s).slice(0, 6).map(r => r.x);
   const relatedRow = $('#relatedRow');
   if (relatedRow) { relatedRow.innerHTML = rel.map(x => cardHTML(x)).join(''); bindTilt(relatedRow); }
 }
