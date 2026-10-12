@@ -406,9 +406,12 @@ catTabs.addEventListener('click', e => {
   const b = e.target.closest('[data-cat]'); if (!b) return;
   filters.cat = b.dataset.cat; filters.line = ''; filters.family = '';
   $$('.ctab', catTabs).forEach(x => x.setAttribute('aria-pressed', x === b));
+  b.scrollIntoView({behavior:REDUCED ? 'auto' : 'smooth', block:'nearest', inline:'nearest'});
   renderChips(); applyFilters();
 });
+scrollRow(catTabs);
 const chips = $('#famChips');
+scrollRow(chips);
 /* family chips; inside Lorenzo Pazzaglia they become the house's lines (marinos, tropicales, vainillas…) */
 function renderChips(){
   const pz = filters.cat === 'pz';
@@ -582,15 +585,13 @@ const NOTE_ICONS = [
 ];
 const noteIcon = n => { const k = norm(n); const hit = NOTE_ICONS.find(([re]) => re.test(k)); return hit ? hit[1] : '✨'; };
 const LEVEL = ['', 'Suave', 'Moderada', 'Buena', 'Alta', 'Muy alta'];
-const FOR = {hombre:'hombres', mujer:'mujeres', unisex:'mujeres y hombres'};
 const pdp = $('#pdp');
 if (pdp) {
-  const p = byId(new URLSearchParams(location.search).get('id')) || P[0];
-  document.title = `${p.name} · ${p.house} · Alto Urbano`;
+  /* perfume/<slug>/ pages set AU_PID; producto.html?id=… still works */
+  const p = byId(window.AU_PID || new URLSearchParams(location.search).get('id')) || P[0];
+  if (!window.AU_PID) document.title = `${p.name} · ${p.house} · Alto Urbano`; /* generated pages bring a better one */
   const sizes = sizesOf(p);
   let size = 'full', qty = 1;
-  const list = (a) => a.length > 1 ? `${a.slice(0, -1).join(', ')} y ${a[a.length - 1]}` : a[0];
-  const desc = `${p.name} de ${p.house} es una fragancia para ${FOR[p.gender]}, en ${p.conc.toLowerCase()} de ${p.ml} ml. Las notas de salida son ${list(p.top).toLowerCase()}; las notas de corazón son ${list(p.heart).toLowerCase()}; y las notas de fondo son ${list(p.base).toLowerCase()}.`;
   /* real ingredient photo when we have it, a quiet icon otherwise */
   const NI = window.AU_NOTE_IMG || {};
   const noteVisual = n => NI[n.toLowerCase()] ? `<span class="ni photo" aria-hidden="true"><img src="${NI[n.toLowerCase()]}" alt="" loading="lazy"></span>` : `<span class="ni" aria-hidden="true">${noteIcon(n)}</span>`;
@@ -623,7 +624,8 @@ if (pdp) {
           <a href="https://wa.me/?text=${encodeURIComponent(`${p.house} ${p.name} en Alto Urbano: ${location.href}`)}" target="_blank" rel="noopener" aria-label="Compartir por WhatsApp">WhatsApp</a>
           <button type="button" id="pdpCopy">Copiar enlace</button>
         </div>
-        <div class="pdp-block"><h3>Descripción</h3><p class="pdp-lead">${p.blurb}</p><p>${desc}</p><p>${p.story}</p></div>
+        <div class="pdp-block"><h3>Descripción</h3><p class="pdp-lead">${p.blurb}</p><p>${p.story}</p></div>
+        <div class="pdp-block pdp-smell"><h2>¿A qué huele ${p.name}?</h2>${window.AU_smell(p).map(t => `<p>${t}</p>`).join('')}</div>
         <div class="pdp-block"><h3>Acordes principales</h3>
           <div class="pdp-acc">${p.accords.map(([a, v]) => `<div class="acc-row"><span>${a}</span><span>${v}%</span><i><b style="--w:${v}%;--c:${ACC[a] || '#C9A44C'}"></b></i></div>`).join('')}</div></div>
         <div class="pdp-block"><h3>Pirámide olfativa</h3>${pyr('Notas de salida', p.top)}${pyr('Notas de corazón', p.heart)}${pyr('Notas de fondo', p.base)}</div>
@@ -641,7 +643,8 @@ if (pdp) {
             <tr><th>Estela</th><td>${LEVEL[p.sillage]}</td></tr>
           </tbody></table></div>
       </div>
-    </div>`;
+    </div>
+    <section class="pdp-reviews" id="resenas" aria-labelledby="revTitle"></section>`;
   const syncPrice = () => {
     const s = sizes.find(x => x.key === size);
     $('#pdpPrice').textContent = clp(s.price * qty);
@@ -672,11 +675,79 @@ if (pdp) {
   /* accords fill in as they come into view */
   if (!REDUCED) gsap.from('.acc-row b', {scaleX:0, duration:1.1, stagger:.08, ease:'expo.out', scrollTrigger:{trigger:'.pdp-acc', start:'top 85%', once:true}});
   if (!REDUCED) gsap.from('.pdp-media, .pdp-info > *', {y:30, autoAlpha:0, duration:1, stagger:.05, ease:'expo.out', clearProps:'all'});
-  /* related: same family or house first */
-  const rel = P.filter(x => x.id !== p.id).map(x => ({x, s:(x.house === p.house ? 2 : 0) + (x.family === p.family ? 2 : 0) + (x.cat === p.cat ? 1 : 0)}))
-    .sort((a, b) => b.s - a.s).slice(0, 6).map(r => r.x);
+  /* si te gusta X, prueba Y: the closest perfumes by notes and accords, saying what they share */
   const relatedRow = $('#relatedRow');
-  if (relatedRow) { relatedRow.innerHTML = rel.map(x => cardHTML(x)).join(''); bindTilt(relatedRow); }
+  if (relatedRow) {
+    $('#relTitle').innerHTML = `Si te gusta ${p.name}, <em>prueba estos</em>`;
+    relatedRow.innerHTML = window.AU_similar(p, 6).map(r => cardHTML(r.p,
+      `<p class="match">Comparten ${(r.notes.length ? r.notes : r.accords).map(t => t.charAt(0).toLowerCase() + t.slice(1)).join(', ')}</p>`)).join('');
+    bindTilt(relatedRow);
+  }
+  renderReviews(p);
+}
+
+/* =====================================================================
+   RESEÑAS — compra verificada, cuánto dura y cuánto se nota en Chile
+   ===================================================================== */
+function renderReviews(p){
+  const PROJ = ['', 'Íntima', 'Moderada', 'Fuerte', 'Muy fuerte'];
+  const SEASONS = ['Verano', 'Otoño', 'Invierno', 'Primavera'];
+  const seasonNow = () => ['Verano', 'Verano', 'Otoño', 'Otoño', 'Otoño', 'Invierno', 'Invierno', 'Invierno', 'Primavera', 'Primavera', 'Primavera', 'Verano'][new Date().getMonth()];
+  const esc = t => String(t).replace(/[&<>"]/g, c => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;'}[c]));
+  const stars = n => `<span class="stars" role="img" aria-label="${n.toFixed(1)} de 5 estrellas">${'★'.repeat(Math.round(n))}${'☆'.repeat(5 - Math.round(n))}</span>`;
+  const avg = a => a.reduce((s, x) => s + x, 0) / a.length;
+  const hours = h => `${Math.round(h)} h`;
+  const box = $('#resenas'); if (!box) return;
+  const list = (window.AU_REVIEWS || []).filter(r => r.id === p.id);
+  const bySeason = SEASONS.map(s => [s, list.filter(r => r.estacion === s)]).filter(([, l]) => l.length);
+  const score = list.length && avg(list.map(r => r.estrellas));
+  const summary = list.length ? `
+    <div class="rv-summary">
+      <div class="rv-score"><b>${score.toFixed(1)}</b>${stars(score)}<small>${list.length} ${list.length === 1 ? 'reseña' : 'reseñas'} · ${list.filter(r => r.verificada).length} con compra verificada</small></div>
+      <dl class="rv-stats">
+        <div><dt>Duración en la piel</dt><dd>${hours(avg(list.map(r => r.duracion)))}</dd></div>
+        <div><dt>Cuánto se nota</dt><dd>${PROJ[Math.round(avg(list.map(r => r.proyeccion)))]}</dd></div>
+        ${bySeason.map(([s, l]) => `<div><dt>En ${s.toLowerCase()}</dt><dd>${hours(avg(l.map(r => r.duracion)))}</dd></div>`).join('')}
+      </dl>
+    </div>
+    <ul class="rv-list">${list.map(r => `<li class="rv">
+      <div class="rv-head">${stars(r.estrellas)}<b>${esc(r.autor)}</b>${r.verificada ? '<span class="rv-ok">Compra verificada</span>' : ''}</div>
+      <p class="rv-meta">${esc(r.ciudad || 'Chile')} · ${esc(r.estacion)} · le duró ${hours(r.duracion)} · ${PROJ[r.proyeccion].toLowerCase()}</p>
+      ${r.texto ? `<p>${esc(r.texto)}</p>` : ''}
+    </li>`).join('')}</ul>`
+    : `<p class="rv-empty">Todavía no hay reseñas de ${p.name}. Si ya lo usaste, cuéntanos cuánto te duró y cuánto se notó: con el clima de acá, eso dice más que cualquier ficha.</p>`;
+  box.innerHTML = `
+    <div class="rv-top"><div><p class="eyebrow"><span>✦</span>Reseñas</p><h2 id="revTitle">Cómo le fue a <em>quienes lo usan</em></h2></div>
+      <button class="btn ghost small" type="button" id="rvOpen" aria-expanded="false" aria-controls="rvForm">Escribir una reseña</button></div>
+    ${summary}
+    <form class="rv-form" id="rvForm" hidden novalidate>
+      <fieldset class="rv-stars-in"><legend>Tu nota</legend><div>${[5, 4, 3, 2, 1].map(n => `<input type="radio" name="estrellas" id="rvs${n}" value="${n}"${n === 5 ? ' checked' : ''}><label for="rvs${n}" title="${n} de 5">★</label>`).join('')}</div></fieldset>
+      <label>¿Cuánto te duró en la piel?<select name="duracion">${[[2, '1 a 2 horas'], [4, '3 a 5 horas'], [7, '6 a 8 horas'], [10, '9 a 12 horas'], [13, 'Más de 12 horas']].map(([v, t]) => `<option value="${v}"${v === 7 ? ' selected' : ''}>${t}</option>`).join('')}</select></label>
+      <fieldset class="rv-proj wide"><legend>¿Cuánto se notaba?</legend><div>${[1, 2, 3, 4].map(n => `<label><input type="radio" name="proyeccion" value="${n}"${n === 2 ? ' checked' : ''}><span>${PROJ[n]}</span></label>`).join('')}</div></fieldset>
+      <label>¿En qué estación lo usaste?<select name="estacion">${SEASONS.map(s => `<option${s === seasonNow() ? ' selected' : ''}>${s}</option>`).join('')}</select></label>
+      <label>Ciudad<input name="ciudad" value="Santiago" maxlength="40"></label>
+      <label>Tu nombre<input name="autor" required maxlength="40" placeholder="Ej: Camila R."></label>
+      <label>N° de pedido <small>opcional, para el sello de compra verificada</small><input name="pedido" maxlength="12" placeholder="AU-XXXXXX" autocapitalize="characters"></label>
+      <label class="wide">Tu reseña<textarea name="texto" rows="3" maxlength="600" placeholder="¿Cómo evolucionó en tu piel? ¿Te lo comentaron?"></textarea></label>
+      <p class="rv-msg wide" id="rvMsg" role="status"></p>
+      <button class="btn wide" type="submit">Enviar reseña por WhatsApp</button>
+    </form>`;
+  const form = $('#rvForm'), open = $('#rvOpen');
+  open.onclick = () => { form.hidden = !form.hidden; open.setAttribute('aria-expanded', !form.hidden); if (!form.hidden) form.autor.focus(); };
+  form.onsubmit = e => {
+    e.preventDefault();
+    const f = Object.fromEntries(new FormData(form));
+    if (!f.autor.trim()) { $('#rvMsg').textContent = 'Escribe tu nombre para publicar la reseña.'; form.autor.focus(); return; }
+    const pedido = f.pedido.trim().toUpperCase();
+    const r = {id:p.id, autor:f.autor.trim(), fecha:new Date().toISOString().slice(0, 10), estrellas:+f.estrellas, duracion:+f.duracion,
+      proyeccion:+f.proyeccion, estacion:f.estacion, ciudad:f.ciudad.trim() || 'Chile', pedido, verificada:false, texto:f.texto.trim()};
+    /* readable for Nico, plus the exact line to paste in js/resenas.js once the order is checked */
+    const text = `Reseña de ${p.house} ${p.name}\n${'★'.repeat(r.estrellas)} · le duró ${hours(r.duracion)} · ${PROJ[r.proyeccion].toLowerCase()} · ${r.estacion} en ${r.ciudad}`
+      + `${pedido ? `\nPedido: ${pedido}` : ''}${r.texto ? `\n"${r.texto}"` : ''}\n— ${r.autor}\n\nPara publicar (js/resenas.js):\n${JSON.stringify(r)},`;
+    const num = String((window.AU_CONTACT || {}).whatsapp || '').replace(/\D/g, '');
+    window.open(`https://wa.me/${num}?text=${encodeURIComponent(text)}`, '_blank', 'noopener');
+    $('#rvMsg').textContent = 'Se abrió WhatsApp con tu reseña. Envía el mensaje y la publicamos apenas la revisemos.';
+  };
 }
 
 /* sello 100 % original: SVG con texto en círculo, uno por cada [data-seal] */
@@ -724,6 +795,33 @@ document.addEventListener('keydown', e => {
 });
 
 /* tilt + light on cards */
+/* rows that slide sideways (category tabs, family chips): with a mouse the wheel and a drag move them,
+   and a soft fade shows there is more on either side */
+function scrollRow(el){
+  if (!el || el._row) return; el._row = true;
+  el.classList.add('scroll-row');
+  const sync = () => {
+    const max = el.scrollWidth - el.clientWidth;
+    el.classList.toggle('more-l', el.scrollLeft > 2);
+    el.classList.toggle('more-r', el.scrollLeft < max - 2);
+  };
+  el.addEventListener('scroll', sync, {passive:true});
+  addEventListener('resize', sync);
+  new MutationObserver(sync).observe(el, {childList:true});
+  sync();
+  el.addEventListener('wheel', e => {
+    const max = el.scrollWidth - el.clientWidth, d = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+    if (max <= 0 || (d < 0 && el.scrollLeft <= 0) || (d > 0 && el.scrollLeft >= max - 1)) return; /* at the ends the page scrolls as usual */
+    e.preventDefault(); e.stopPropagation(); el.scrollLeft += d;
+  }, {passive:false});
+  let x0 = 0, s0 = 0, dragged = false;
+  el.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse') return; x0 = e.clientX; s0 = el.scrollLeft; dragged = false;
+    const move = ev => { const dx = ev.clientX - x0; if (Math.abs(dx) > 5) { dragged = true; el.classList.add('dragging'); } if (dragged) el.scrollLeft = s0 - dx; };
+    const up = () => { removeEventListener('pointermove', move); removeEventListener('pointerup', up); el.classList.remove('dragging'); };
+    addEventListener('pointermove', move); addEventListener('pointerup', up); });
+  /* a drag must not also press the button it started on */
+  el.addEventListener('click', e => { if (dragged) { e.stopPropagation(); e.preventDefault(); dragged = false; } }, true);
+}
 function bindTilt(root){
   if (!FINE || REDUCED) return;
   $$('.card', root).forEach(card => {
@@ -747,7 +845,7 @@ let lastFocus, modalSize = 'd5';
 function lum(hex){ const n = parseInt(hex.slice(1), 16); return (0.299 * (n >> 16) + 0.587 * (n >> 8 & 255) + 0.114 * (n & 255)) / 255; }
 function openModal(id){
   /* every perfume has its own page with the full description */
-  location.href = `producto.html?id=${encodeURIComponent(id)}`; return;
+  location.href = window.AU_url(byId(id)); return;
   const p = byId(id), sizes = sizesOf(p);
   modalSize = 'd5';
   lastFocus = document.activeElement;
@@ -1170,7 +1268,7 @@ function startIntro(){
   intro.addEventListener('click', () => tl.play('open'), {once:true});
 }
 /* API used by features.js (momentos, comparador, kit, Círculo) */
-window.AU = {$, $$, P, byId, clp, decant, sizesOf, TIME, REDUCED, FINE, showToast, scrollToEl, addToCart, addKit, kitPrice, openModal, cardHTML,
+window.AU = {$, $$, P, byId, clp, decant, sizesOf, TIME, REDUCED, FINE, showToast, scrollToEl, addToCart, addKit, kitPrice, openModal, cardHTML, scrollRow,
   setMoment:id => catalogApi.setMoment(id), setScent:id => catalogApi.setScent(id)};
 
 document.fonts.ready.then(startIntro);

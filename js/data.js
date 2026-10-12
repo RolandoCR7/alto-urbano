@@ -439,3 +439,51 @@ window.AU_scentScore = (p, f) => {
   const lead = f.accords.includes(p.accords[0][0]) ? 3 : f.accords.includes((p.accords[1] || [])[0]) ? 1.5 : 0;
   return {score:matched.length + lead, notes:[...new Set(matched)]};
 };
+
+/* ---------- shared by the store and tools/generar-paginas.js ---------- */
+const auNorm = s => String(s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
+
+/* each perfume's own page: perfume/<slug>/ */
+window.AU_slug = p => auNorm(`${p.name} ${p.house}`).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+window.AU_url = p => `perfume/${window.AU_slug(p)}/`;
+
+/* "si te gusta X, prueba Y": shared notes (base notes weigh most, they are what stays on skin),
+   shared accords by their strength, same family, and a gender the wearer of X would also choose */
+window.AU_similar = (p, n = 6) => {
+  const notes = x => { const m = new Map(); [[x.top, .8], [x.heart, 1], [x.base, 1.25]].forEach(([l, w]) => l.forEach(t => m.set(auNorm(t), Math.max(m.get(auNorm(t)) || 0, w)))); return m; };
+  const mine = notes(p), acc = new Map(p.accords.map(([a, v]) => [a, v]));
+  const fits = x => p.gender === 'unisex' || x.gender === 'unisex' || x.gender === p.gender;
+  return window.AU_PRODUCTS.filter(x => x.id !== p.id && fits(x)).map(x => {
+    const theirs = notes(x);
+    let shared = 0, union = 0; const common = [];
+    new Set([...mine.keys(), ...theirs.keys()]).forEach(k => {
+      const a = mine.get(k) || 0, b = theirs.get(k) || 0;
+      shared += Math.min(a, b); union += Math.max(a, b);
+      if (a && b) common.push(k);
+    });
+    const accShared = x.accords.reduce((s, [a, v]) => s + Math.min(v, acc.get(a) || 0), 0) / 100;
+    /* the catalog already says some perfumes are alike (like: 'Erba Pura de Xerjoff') */
+    const twin = [x.like, p.like].some((l, i) => l && auNorm(l).includes(auNorm((i ? x : p).name)));
+    const score = (union ? shared / union : 0) * 4 + accShared + (x.family === p.family ? .8 : 0) + (twin ? 1.5 : 0);
+    /* show the notes with their own spelling, plus the accords they share when notes alone say little */
+    const label = [...x.top, ...x.heart, ...x.base].filter(t => common.includes(auNorm(t)));
+    const accords = x.accords.map(([a]) => a).filter(a => acc.has(a)).slice(0, 3);
+    return {p:x, score, notes:[...new Set(label)].slice(0, 4), accords};
+  }).sort((a, b) => b.score - a.score).slice(0, n);
+};
+
+/* "¿A qué huele?" in plain words, built from the real notes and accords */
+window.AU_smell = p => {
+  const lc = a => a.map(t => t.charAt(0).toLowerCase() + t.slice(1));
+  const many = a => a.length > 1 || /s$/.test(auNorm(a[0].split(' ')[0]));
+  const list = a => a.length > 1 ? `${a.slice(0, -1).join(', ')} y ${a[a.length - 1]}` : (a[0] || '');
+  const LV = ['', 'suave', 'moderada', 'buena', 'alta', 'muy alta'];
+  const WHO = {hombre:'para hombre', mujer:'para mujer', unisex:'unisex'};
+  const WHEN = {'día':'de día', noche:'de noche', ambos:'de día y de noche'};
+  const [a1, a2, a3] = p.accords.map(([a]) => a.toLowerCase());
+  return [
+    `${p.name} abre con ${list(lc(p.top))}. ${p.heart.length ? `Después aparece${many(p.heart) ? 'n' : ''} ${list(lc(p.heart))}, ` : ''}y en la piel queda un fondo de ${list(lc(p.base))}.`,
+    `Sus acordes principales son ${list([a1, a2, a3].filter(Boolean))}.`,
+    `Es un perfume ${WHO[p.gender]} que se usa ${WHEN[p.time]}, sobre todo en ${list(lc(p.seasons))}. Su duración es ${LV[p.longevity]} y su estela, ${LV[p.sillage]}.`,
+  ];
+};

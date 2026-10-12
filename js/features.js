@@ -258,6 +258,7 @@ if ($('#kitPick')) {
         <img src="${p.cut}" alt="" loading="lazy"><b>${p.name}</b><small>${p.house}</small><span>${clp(decant(p, kit.ml))}</span>
       </button>`).join('')}</div>
       <button type="button" class="kit-arrow next" aria-label="Ver más">›</button></div>`;
+    AU.scrollRow($('.kit-tabs', kitPick));
     syncArrows();
   }
   /* arrows only where there is somewhere to go */

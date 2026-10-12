@@ -103,3 +103,51 @@
 /* foto real del ingrediente */
 .ni.photo{padding:0;overflow:hidden;background:#EFE3CB}
 .ni.photo img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* ¿a qué huele? — a real heading for people and for Google, styled like the other blocks */
+.pdp-smell h2{font-family:Jost,sans-serif;font-weight:500;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:#C9A44C;margin:0 0 14px}
+.pdp-related .card .match{font-family:Jost,sans-serif;font-size:12px;letter-spacing:.04em;color:#9A7426;margin-top:-2px;margin-bottom:10px}
+
+/* reseñas */
+.pdp-reviews{margin-top:clamp(40px,7vh,72px);border-top:1px solid rgba(201,164,76,.18);padding-top:clamp(28px,5vh,48px)}
+.rv-top{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:24px}
+.rv-top h2{font-family:Cinzel,serif;font-weight:400;font-size:clamp(26px,3vw,40px);line-height:1.1;margin:6px 0 0;color:#F3EBDB}
+.rv-top h2 em{font-family:"Cormorant Garamond",serif;font-style:italic;color:#E9D39A}
+.rv-empty{max-width:62ch;color:#B3A88F;font-size:16px;line-height:1.7;margin:0}
+.rv-summary{display:grid;grid-template-columns:auto 1fr;gap:clamp(20px,4vw,56px);align-items:center;padding:22px 0;border-bottom:1px solid rgba(201,164,76,.14)}
+.rv-score{display:grid;gap:4px;justify-items:start}
+.rv-score b{font-family:Cinzel,serif;font-weight:400;font-size:54px;line-height:1;color:#E9D39A}
+.rv-score small{color:#8A7F6B;font-size:13px}
+.stars{color:#C9A44C;letter-spacing:2px;font-size:15px}
+.rv-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:0}
+.rv-stats div{border:1px solid rgba(201,164,76,.18);padding:12px 14px}
+.rv-stats dt{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#8A7F6B}
+.rv-stats dd{margin:4px 0 0;font-family:Cinzel,serif;font-size:20px;color:#F3EBDB}
+.rv-list{list-style:none;margin:0;padding:0}
+.rv{padding:20px 0;border-bottom:1px solid rgba(201,164,76,.1)}
+.rv-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.rv-head b{color:#F3EBDB;font-weight:500}
+.rv-ok{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#0A0907;background:#C9A44C;padding:3px 8px}
+.rv-meta{color:#8A7F6B;font-size:13px;margin:6px 0 8px}
+.rv p:last-child{color:#B3A88F;line-height:1.7;margin:0}
+.rv-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 20px;margin-top:24px;padding:24px;border:1px solid rgba(201,164,76,.28);background:rgba(201,164,76,.04)}
+.rv-form .wide,.rv-form fieldset.rv-stars-in{grid-column:1/-1}
+.rv-form label{display:grid;gap:6px;font-size:13px;color:#B3A88F}
+.rv-form label small{color:#8A7F6B}
+.rv-form input:not([type=radio]),.rv-form select,.rv-form textarea{font:inherit;font-size:16px;color:#F3EBDB;background:#13110D;border:1px solid rgba(201,164,76,.28);padding:10px 12px;border-radius:0}
+.rv-form fieldset{border:0;padding:0;margin:0;min-width:0}
+.rv-form legend{font-size:13px;color:#B3A88F;margin-bottom:8px;padding:0}
+.rv-stars-in div{display:inline-flex;flex-direction:row-reverse;gap:4px}
+.rv-stars-in input{position:absolute;opacity:0;pointer-events:none}
+.rv-stars-in label{font-size:30px;line-height:1;color:#4A4234;cursor:pointer;transition:color .2s}
+.rv-stars-in input:checked ~ label,.rv-stars-in label:hover,.rv-stars-in label:hover ~ label{color:#C9A44C}
+.rv-stars-in input:focus-visible + label{outline:1px solid #C9A44C;outline-offset:2px}
+.rv-proj div{display:flex;flex-wrap:wrap;gap:8px}
+.rv-proj label{display:block}
+.rv-proj input{position:absolute;opacity:0;pointer-events:none}
+.rv-proj span{display:block;padding:9px 14px;border:1px solid rgba(201,164,76,.28);color:#B3A88F;cursor:pointer;font-size:14px}
+.rv-proj input:checked + span{background:#C9A44C;border-color:#C9A44C;color:#0A0907}
+.rv-proj input:focus-visible + span{outline:1px solid #E9D39A;outline-offset:2px}
+.rv-msg{margin:0;color:#E9D39A;min-height:1.2em;font-size:14px}
+@media (max-width:700px){.rv-summary{grid-template-columns:1fr}.rv-form{grid-template-columns:1fr;padding:18px}}
+.rv-form[hidden]{display:none}

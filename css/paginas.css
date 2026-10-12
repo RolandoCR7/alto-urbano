@@ -82,3 +82,36 @@
 .marquee-track{animation-duration:55s}
 .marquee-track span{font-size:clamp(16px,1.7vw,26px);letter-spacing:.14em;padding-right:1.2em}
 .marquee-track span::after{margin-left:1.2em;font-size:.5em}
+
+/* guías: perfume/<slug>/ and guias/<slug>/ pages written by tools/generar-paginas.cjs */
+.guide-page{background:radial-gradient(ellipse 60% 40% at 30% 0%,rgba(201,164,76,.12),transparent 70%),#0A0907}
+.guide{max-width:1100px;margin:0 auto;padding:calc(var(--bar-h, 34px) + 110px) var(--gutter) clamp(70px,11vh,120px)}
+.guide h1{font-family:Cinzel,serif;font-weight:400;font-size:clamp(34px,5vw,64px);line-height:1.05;color:#F3EBDB;margin:10px 0 18px}
+.g-intro{max-width:66ch;color:#B3A88F;font-size:17px;line-height:1.75;margin:0 0 clamp(30px,5vh,50px)}
+.g-list{list-style:none;counter-reset:g;margin:0;padding:0;display:grid;gap:14px}
+.g-item{counter-increment:g}
+.g-item a{display:grid;grid-template-columns:44px 96px 1fr;align-items:center;gap:20px;padding:18px 22px;border:1px solid rgba(201,164,76,.16);background:rgba(255,255,255,.015);color:inherit;text-decoration:none;transition:border-color .3s,background .3s}
+.g-item a::before{content:counter(g, decimal-leading-zero);font-family:Cinzel,serif;font-size:22px;color:#9A7426}
+.g-item a:hover{border-color:rgba(201,164,76,.5);background:rgba(201,164,76,.05)}
+.g-item img{width:96px;height:110px;object-fit:contain;filter:drop-shadow(-6px 10px 8px rgba(0,0,0,.55))}
+.g-copy{display:grid;gap:4px}
+.g-copy small{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:#C9A44C}
+.g-copy b{font-family:Cinzel,serif;font-weight:400;font-size:22px;color:#F3EBDB}
+.g-copy span{color:#B3A88F;font-size:15px;line-height:1.6}
+.g-copy em{font-style:normal;color:#E9D39A;font-size:14px}
+.g-more{margin-top:clamp(40px,7vh,70px);border-top:1px solid rgba(201,164,76,.18);padding-top:24px}
+.g-more h2{font-family:Jost,sans-serif;font-weight:500;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:#C9A44C;margin:0 0 14px}
+.g-more ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:10px}
+.g-more a{display:block;padding:9px 14px;border:1px solid rgba(201,164,76,.28);color:#B3A88F;text-decoration:none;font-size:14px}
+.g-more a:hover{color:#0A0907;background:#C9A44C;border-color:#C9A44C}
+.g-index{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.g-index a{display:grid;gap:8px;height:100%;padding:22px;border:1px solid rgba(201,164,76,.18);color:inherit;text-decoration:none;transition:border-color .3s,background .3s}
+.g-index a:hover{border-color:rgba(201,164,76,.5);background:rgba(201,164,76,.05)}
+.g-index b{font-family:Cinzel,serif;font-weight:400;font-size:20px;color:#F3EBDB}
+.g-index span{color:#B3A88F;font-size:14px;line-height:1.6}
+/* the static copy a perfume page carries before the store's script replaces it */
+.pdp-static{max-width:760px;color:#B3A88F;line-height:1.7}
+.pdp-static h1{font-family:Cinzel,serif;font-weight:400;font-size:clamp(34px,5vw,60px);color:#F3EBDB;margin:6px 0}
+.pdp-static h2{font-family:Jost,sans-serif;font-weight:500;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:#C9A44C;margin:26px 0 10px}
+.pdp-static a{color:#E9D39A}
+@media (max-width:700px){.g-item a{grid-template-columns:64px 1fr;gap:14px;padding:14px}.g-item a::before{display:none}.g-item img{width:64px;height:80px}}

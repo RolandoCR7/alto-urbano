@@ -159,3 +159,9 @@
 .best-row{grid-template-columns:repeat(6,minmax(0,1fr))}
 @media (max-width:1280px){.best-row{grid-auto-flow:row;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-columns:auto;overflow:visible;scroll-snap-type:none}}
 @media (max-width:620px){.best-row{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* sliding rows: a fade on the side that has more, and a grab hand while dragging with the mouse */
+.scroll-row{-webkit-mask-image:none;mask-image:none}
+.scroll-row.more-r{-webkit-mask-image:linear-gradient(90deg,#000 82%,transparent);mask-image:linear-gradient(90deg,#000 82%,transparent)}
+.scroll-row.more-l{-webkit-mask-image:linear-gradient(90deg,transparent,#000 18%);mask-image:linear-gradient(90deg,transparent,#000 18%)}
+.scroll-row.more-l.more-r{-webkit-mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent)}
+@media (pointer:fine){.scroll-row.more-l,.scroll-row.more-r{cursor:grab}.scroll-row.dragging{cursor:grabbing;user-select:none}}
