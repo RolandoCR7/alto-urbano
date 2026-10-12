@@ -258,7 +258,16 @@ if ($('#kitPick')) {
         <img src="${p.cut}" alt="" loading="lazy"><b>${p.name}</b><small>${p.house}</small><span>${clp(decant(p, kit.ml))}</span>
       </button>`).join('')}</div>
       <button type="button" class="kit-arrow next" aria-label="Ver más">›</button></div>`;
+    syncArrows();
   }
+  /* arrows only where there is somewhere to go */
+  function syncArrows(){
+    const st = $('.kit-strip', kitPick); if (!st) return;
+    $('.kit-arrow.prev', kitPick).disabled = st.scrollLeft < 4;
+    $('.kit-arrow.next', kitPick).disabled = st.scrollLeft + st.clientWidth > st.scrollWidth - 4;
+  }
+  kitPick.addEventListener('scroll', syncArrows, true);
+  addEventListener('resize', syncArrows);
   function renderKit(){
     kitSlots.innerHTML = Array.from({length:3}, (_, i) => {
       const p = byId(kit.ids[i]);
@@ -290,7 +299,7 @@ if ($('#kitPick')) {
     const tab = e.target.closest('[data-kit-cat]');
     if (tab) { kit.cat = tab.dataset.kitCat; renderPick(); if (!REDUCED) gsap.from('.kit-tile', {y:20, autoAlpha:0, duration:.5, stagger:.04, ease:'expo.out'}); return; }
     const arrow = e.target.closest('.kit-arrow');
-    if (arrow) { const st = $('.kit-strip', kitPick); st.scrollBy({left:(arrow.classList.contains('next') ? 1 : -1) * st.clientWidth * .8, behavior:REDUCED ? 'auto' : 'smooth'}); return; }
+    if (arrow) { const st = $('.kit-strip', kitPick); st.scrollBy({left:(arrow.classList.contains('next') ? 1 : -1) * st.clientWidth, behavior:REDUCED ? 'auto' : 'smooth'}); return; }
     const t = e.target.closest('[data-kit]'); if (!t) return;
     const id = t.dataset.kit;
     if (kit.ids.includes(id)) { kit.ids.splice(kit.ids.indexOf(id), 1); renderKit(); return; }

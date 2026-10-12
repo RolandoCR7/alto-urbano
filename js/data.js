@@ -353,15 +353,8 @@ window.AU_PRODUCTS = [
    Vacío = el pedido se abre en WhatsApp para elegir el contacto. */
 window.AU_CONTACT = {whatsapp:''};
 
-/* unisex perfumes lean feminine (f), masculine (m) or both: decides which "Para ellas / Para ellos" collection shows them */
-window.AU_LEAN = {
-  erbapura:'f', gosroyale:'f', erbagold:'f', pax:'f', sungria:'f', dreamsea:'f', sugarkisses:'f',
-  amberoudgold:'fm', aquadubai:'fm', br540:'fm', angelsshare:'fm', summerhammer:'fm', vanpyrhum:'fm',
-  naxos:'m', amberoudbleu:'m', torino21:'m', torino22:'m', alexandria2:'m', oudgreatness:'m', oudwood:'m', tobaccovanille:'m',
-  ombreleather:'m', blacksea:'m', ginfusion:'m', bloodysmoke:'m',
-};
-window.AU_forGender = (p, g) => !g || p.gender === g ||
-  (g !== 'unisex' && p.gender === 'unisex' && (window.AU_LEAN[p.id] || 'fm').includes(g === 'mujer' ? 'f' : 'm'));
+/* each collection shows only its own gender: unisex perfumes live in "Para todos", not in "Para ellas / Para ellos" */
+window.AU_forGender = (p, g) => !g || p.gender === g;
 
 window.AU_CATEGORIES = {nicho:'Nicho', lujo:'Alta perfumería', disenador:'Diseñador', arabe:'Árabes'};
 
@@ -428,13 +421,13 @@ window.AU_MOMENTS = [
 
 /* Familias olfativas (fotos de ingredientes: Unsplash). accords = acordes que definen la familia */
 window.AU_SCENTS = [
-  {id:'frutales', title:'Frutales', img:'img/familias/frutales.jpg', accords:['Frutal', 'Tropical'],
+  {id:'frutales', title:'Frutales', text:'Piña, manzana, mango y frutos rojos: perfumes jugosos y alegres.', img:'img/familias/frutales.jpg', accords:['Frutal', 'Tropical'],
    keys:['piña', 'manzana', 'pera', 'mango', 'lichi', 'melon', 'grosella', 'frambuesa', 'maracuya', 'uva', 'fruta', 'coco', 'datil', 'ruibarbo', 'ciruela', 'vino']},
-  {id:'citricas', title:'Cítricas', img:'img/familias/citricas.jpg', accords:['Cítrico'],
+  {id:'citricas', title:'Cítricas', text:'Bergamota, limón, naranja y pomelo: frescos, luminosos y fáciles de llevar.', img:'img/familias/citricas.jpg', accords:['Cítrico'],
    keys:['bergamota', 'limon', 'lima', 'naranja', 'mandarina', 'pomelo', 'yuzu', 'citric', 'verbena', 'azahar']},
-  {id:'amaderadas', title:'Amaderadas', img:'img/familias/amaderadas.jpg', accords:['Amaderado', 'Oud', 'Cuero', 'Incienso', 'Tabaco'],
+  {id:'amaderadas', title:'Amaderadas', text:'Cedro, sándalo, vetiver y oud: perfumes con cuerpo, elegantes y profundos.', img:'img/familias/amaderadas.jpg', accords:['Amaderado', 'Oud', 'Cuero', 'Incienso', 'Tabaco'],
    keys:['cedro', 'sandalo', 'vetiver', 'oud', 'pachuli', 'guayaco', 'abedul', 'palisandro', 'madera', 'roble', 'musgo', 'cuero', 'incienso', 'olibano', 'tabaco']},
-  {id:'dulces', title:'Dulces y avainilladas', img:'img/familias/dulces.jpg', accords:['Dulce', 'Avainillado', 'Caramelo', 'Miel', 'Cacao', 'Coñac', 'Ron'],
+  {id:'dulces', title:'Dulces y avainilladas', text:'Vainilla, caramelo, tonka y cacao: cálidos, golosos y envolventes.', img:'img/familias/dulces.jpg', accords:['Dulce', 'Avainillado', 'Caramelo', 'Miel', 'Cacao', 'Coñac', 'Ron'],
    keys:['vainilla', 'caramelo', 'miel', 'cacao', 'chocolate', 'praline', 'tonka', 'toffee', 'azucar', 'benjui', 'galleta', 'crema', 'leche', 'avellana', 'ron', 'coñac']},
 ];
 /* how much a family "rules" a perfume, from its real notes: top notes count most when they open with it,

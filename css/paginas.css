@@ -16,16 +16,21 @@
 .bt-mono{font-family:"Cormorant Garamond",serif;font-style:italic;font-weight:500;font-size:clamp(46px,4.2vw,64px);line-height:.9;
   background:linear-gradient(100deg,#6E521C 0%,#B8913F 30%,#E6C985 48%,#9A7426 64%,#5C4416 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
   transition:transform .6s var(--ease-out)}
+.bt-logo{display:block;width:78%;height:clamp(44px,4.6vw,66px);background:linear-gradient(100deg,#6E521C 0%,#B8913F 30%,#E6C985 48%,#9A7426 64%,#5C4416 100%);
+  -webkit-mask-position:center;mask-position:center;-webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;transition:transform .6s var(--ease-out)}
+/* crest-style logos (an emblem over the name) need more height to read */
+.bt-logo.emblem{height:clamp(78px,7.6vw,108px)}
 .bt-word{font-family:Jost,sans-serif;font-weight:500;font-size:10.5px;letter-spacing:.32em;text-transform:uppercase;color:#9A7426;max-width:16ch;line-height:1.5;transition:transform .6s var(--ease-out)}
 .bt-meta{position:absolute;left:20px;bottom:16px;font-family:Jost,sans-serif;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#8A7F6B;opacity:0;transform:translateY(8px);transition:opacity .4s,transform .5s var(--ease-out)}
 .bt-bottle{position:absolute;right:14px;bottom:-8px;height:46%;width:auto;z-index:-1;opacity:0;transform:translateY(30px) rotate(6deg);
   filter:drop-shadow(-6px 10px 8px rgba(60,40,10,.25));transition:opacity .5s,transform .7s var(--ease-out)}
 .brand-tile:hover,.brand-tile:focus-visible{transform:translateY(-8px);border-color:rgba(154,116,38,.45);box-shadow:0 1px 0 rgba(255,255,255,.8) inset,0 34px 50px -26px rgba(60,40,10,.45)}
 .brand-tile:hover .bt-mono,.brand-tile:focus-visible .bt-mono{transform:translateY(-14px) scale(.9)}
-.brand-tile:hover .bt-word,.brand-tile:focus-visible .bt-word{transform:translateY(-14px)}
+.brand-tile:hover .bt-word,.brand-tile:focus-visible .bt-word,.brand-tile:hover .bt-logo,.brand-tile:focus-visible .bt-logo{transform:translateY(-14px)}
 .brand-tile:hover .bt-meta,.brand-tile:focus-visible .bt-meta{opacity:1;transform:none}
 .brand-tile:hover .bt-bottle,.brand-tile:focus-visible .bt-bottle{opacity:1;transform:none}
-@media (hover:none){.bt-meta{opacity:1;transform:none}}
+/* touch screens have no hover: the tile opens already showing a bottle of the house */
+@media (hover:none){.bt-meta,.bt-bottle{opacity:1;transform:none}.bt-mono,.bt-word,.bt-logo{transform:translateY(-14px)}.bt-mono{transform:translateY(-14px) scale(.9)}}
 .brands-cta{display:flex;justify-content:center;margin-top:clamp(20px,4vh,40px)}
 
 /* página de perfumes */

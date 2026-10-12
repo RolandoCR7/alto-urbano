@@ -1,4 +1,4 @@
-/* Alto Urbano: UI de la tienda (sin dependencias propias; usa GSAP, ScrollTrigger, Flip y Lenis por CDN) */
+/* Alto Urbano: UI de la tienda (sin dependencias propias; usa GSAP, ScrollTrigger y Lenis por CDN) */
 (() => {
 const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const FINE = matchMedia('(pointer:fine)').matches;
@@ -12,7 +12,7 @@ const FREE_SHIP = 80000;
 const GENDER = {hombre:'Masculino', mujer:'Femenino', unisex:'Unisex'};
 const TIME = {'día':'De día', noche:'De noche', ambos:'Día y noche'};
 
-gsap.registerPlugin(ScrollTrigger, Flip);
+gsap.registerPlugin(ScrollTrigger);
 
 /* ---------- prices ---------- */
 const decant = (p, ml) => Math.ceil((p.price / p.ml * ml * 1.15 + 2000) / 1000) * 1000 - 10;
@@ -138,14 +138,13 @@ const rStage = $('#rStage'), rCopy = $('#rCopy');
 if (rStage) (() => {
 const R = P.filter(p => p.hero).length ? P.filter(p => p.hero) : P;   // the hero ring: a curated set of real bottles
 const N = R.length, STEP = Math.PI * 2 / N;
-const rHouse = $('#rHouse'), rName = $('#rName'), rText = $('#rText'), rNotes = $('#rNotes'), rPrice = $('#rPrice');
+const rHouse = $('#rHouse'), rName = $('#rName'), rText = $('#rText'), rNotes = $('#rNotes');
 rStage.insertAdjacentHTML('afterbegin', R.map((p, i) => `
   <div class="r-item" data-i="${i}" style="--ar:${p.ar}">
     ${rbHTML(p)}
     <img class="r-refl" src="${p.cut}" alt="" aria-hidden="true" draggable="false">
   </div>`).join(''));
 const items = $$('.r-item', rStage);
-$('#rTotal').textContent = String(N).padStart(2, '0');
 
 const ronda = {pos:0, front:-1};
 const mod = (a, n) => ((a % n) + n) % n;
@@ -177,8 +176,6 @@ function fillCopy(p){
   rHouse.textContent = p.house;
   rText.textContent = p.blurb;
   rNotes.innerHTML = p.accords.slice(0, 4).map(([a]) => `<li>${a}</li>`).join('');
-  rPrice.innerHTML = `Decant 5 ml <b>${clp(decant(p, 5))}</b> <span>· Frasco ${p.ml} ml ${clp(p.price)}</span>`;
-  $('#rIdx').textContent = String(R.indexOf(p) + 1).padStart(2, '0');
   return splitInto(rName, p.name);
 }
 function setFront(i, animate = true){
@@ -190,12 +187,12 @@ function setFront(i, animate = true){
   if (!animate || REDUCED) { fillCopy(p); return; }
   gsap.timeline()
     .to($$('.split-char', rName), {yPercent:-110, duration:.35, stagger:.008, ease:'power3.in'})
-    .to([rHouse, rText, rNotes, rPrice], {autoAlpha:0, y:-8, duration:.25, stagger:.03}, 0)
+    .to([rHouse, rText, rNotes], {autoAlpha:0, y:-8, duration:.25, stagger:.03}, 0)
     .add(() => {
       const chars = fillCopy(p);
       gsap.set(chars, {yPercent:110});
       gsap.to(chars, {yPercent:0, duration:.85, stagger:.018, ease:'expo.out'});
-      gsap.fromTo([rHouse, rText, rNotes, rPrice], {autoAlpha:0, y:12}, {autoAlpha:1, y:0, duration:.6, stagger:.05, ease:'expo.out', delay:.1});
+      gsap.fromTo([rHouse, rText, rNotes], {autoAlpha:0, y:12}, {autoAlpha:1, y:0, duration:.6, stagger:.05, ease:'expo.out', delay:.1});
     });
 }
 const frontBottle = () => $('.rb', items[ronda.front]);
@@ -247,17 +244,14 @@ function goTo(i){
 let autoplay, heroInView = true, heroHover = false;
 function restartAutoplay(){
   if (autoplay) autoplay.kill();
-  gsap.set('#rProg i', {scaleX:0});
   if (REDUCED) return;
-  autoplay = gsap.to('#rProg i', {scaleX:1, duration:6.5, ease:'none', onComplete:() => goTo(ronda.front + 1)});
+  autoplay = gsap.delayedCall(6.5, () => goTo(ronda.front + 1));
   syncAutoplay();
 }
 function syncAutoplay(){ if (autoplay) (heroInView && !heroHover && !document.documentElement.classList.contains('modal-open')) ? autoplay.resume() : autoplay.pause(); }
 ScrollTrigger.create({trigger:'.hero', start:'top top', end:'bottom 30%', onToggle:self => { heroInView = self.isActive; syncAutoplay(); }});
 [rCopy, rStage].forEach(el => { el.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') { heroHover = true; syncAutoplay(); } });
   el.addEventListener('pointerleave', () => { heroHover = false; syncAutoplay(); }); });
-$('#rPrev').onclick = () => goTo(ronda.front - 1);
-$('#rNext').onclick = () => goTo(ronda.front + 1);
 $('#rView').onclick = () => openModal(R[ronda.front].id);
 $('#rAdd').onclick = () => addToCart(R[ronda.front].id, 'd5', $('img', frontBottle()));
 
@@ -307,7 +301,7 @@ function rondaEnter(){
   gsap.set([rStage, rCopy], {autoAlpha:1});
   gsap.to(ronda, {pos:0, duration:2.2, ease:'expo.out', onComplete:() => { layoutRonda(); showComp(); }});
   gsap.fromTo($$('.split-char', rName), {yPercent:110}, {yPercent:0, duration:1.1, stagger:.025, ease:'expo.out', delay:.5});
-  gsap.fromTo([rHouse, rText, rNotes, rPrice, '.r-copy .hero-cta', '.r-ui'], {autoAlpha:0, y:16}, {autoAlpha:1, y:0, duration:.9, stagger:.07, ease:'expo.out', delay:.7});
+  gsap.fromTo([rHouse, rText, rNotes, '.r-copy .hero-cta', '.r-ui'], {autoAlpha:0, y:16}, {autoAlpha:1, y:0, duration:.9, stagger:.07, ease:'expo.out', delay:.7});
 }
 heroApi = {sync:syncAutoplay, restart:restartAutoplay, enter:rondaEnter};
 })();
@@ -356,7 +350,7 @@ if (notesSteps) {
 }
 
 /* =====================================================================
-   CATALOG — filters with Flip
+   CATALOG — filters
    ===================================================================== */
 const grid = $('#grid');
 const cardHTML = (p, extra = '') => {
@@ -432,7 +426,7 @@ chips.addEventListener('click', e => {
 });
 let qT;
 $('#search').addEventListener('input', e => { clearTimeout(qT); qT = setTimeout(() => { filters.q = e.target.value; applyFilters(); }, 180); });
-$('#gender').addEventListener('change', e => { filters.gender = e.target.value; applyFilters(); });
+$('#gender').addEventListener('change', e => { filters.gender = e.target.value; syncHero(); applyFilters(); });
 $('#sort').addEventListener('change', e => { filters.sort = e.target.value; applyFilters(); });
 grid.addEventListener('click', e => { if (e.target.id === 'clearFilters') resetFilters(); });
 
@@ -453,13 +447,32 @@ function renderActive(){
   const pill = (label, key) => `<span class="af">${label}<button data-clear="${key}" aria-label="Quitar el filtro ${label}">×</button></span>`;
   activeFilters.hidden = !m && !sc;
   activeFilters.innerHTML = (m ? pill(m.title, 'moment') : '') + (sc ? pill(`Fragancias ${sc.title.toLowerCase()}`, 'scent') : '');
+  syncHero();
+}
+/* perfumes.html: the big title says what is being shown (a family, an occasion or a gender), not always "Perfumes originales" */
+const heroTitle = $('#catHeroTitle'), heroText = $('.cat-hero > p');
+const HERO_DEFAULT = heroTitle && [heroTitle.innerHTML, heroText.textContent, document.title];
+const GH = {mujer:['Perfumes <em>mujer</em>', 'Fragancias femeninas de perfil floral, frutal y dulce.'],
+  hombre:['Perfumes <em>hombre</em>', 'Fragancias masculinas de perfil amaderado, aromático y especiado.'],
+  unisex:['Perfumes <em>unisex</em>', 'Fragancias para todos: frescas, dulces, amaderadas y orientales.']};
+function syncHero(){
+  if (!heroTitle) return;
+  const m = (window.AU_MOMENTS || []).find(x => x.id === filters.moment), sc = scentOf(filters.scent);
+  const [title, text, doc] = sc ? [`Fragancias <em>${sc.title.toLowerCase()}</em>`, sc.text, `Fragancias ${sc.title.toLowerCase()}`]
+    : m ? [`Perfumes <em>${m.title.replace(/^Para /, 'para ')}</em>`, m.text, `Perfumes ${m.title.toLowerCase()}`]
+    : GH[filters.gender] ? [...GH[filters.gender], `Perfumes ${filters.gender}`]
+    : HERO_DEFAULT;
+  heroTitle.innerHTML = title; heroText.textContent = text;
+  document.title = doc === HERO_DEFAULT[2] ? doc : `${doc} · Alto Urbano`;
 }
 function setMoment(id){ resetFilters(false); filters.moment = id; renderActive(); applyFilters(false); }
 function setScent(id){ resetFilters(false); filters.scent = id; renderActive(); applyFilters(false); }
 activeFilters.addEventListener('click', e => { const b = e.target.closest('[data-clear]'); if (b) { filters[b.dataset.clear] = ''; renderActive(); applyFilters(); } });
 
 function applyFilters(animate = true){
-  const state = animate && !REDUCED ? Flip.getState(cards) : null;
+  /* settle every card first: a filter applied while cards were still animating left some invisible or out of place */
+  gsap.getTweensOf(cards).forEach(t => { if (!('rotationX' in t.vars || 'rotationY' in t.vars)) t.kill(); }); /* keep only the hover tilt */
+  gsap.set(cards, {x:0, y:0, scale:1, clearProps:'opacity,visibility'});
   const q = norm(filters.q.trim());
   const matches = p =>
     (!filters.cat || (filters.cat === 'pz' ? p.house === PZ_HOUSE : p.cat === filters.cat)) &&
@@ -470,7 +483,7 @@ function applyFilters(animate = true){
     (!filters.scent || window.AU_scentScore(p, scentOf(filters.scent)).score >= 3) &&
     (!q || norm([p.name, p.house, FAM[p.family], ...p.top, ...p.heart, ...p.base, ...p.accords.map(a => a[0])].join(' ')).includes(q));
   const sorters = {
-    featured:(a, b) => (filters.gender ? (b.gender === filters.gender) - (a.gender === filters.gender) : 0) || P.indexOf(a) - P.indexOf(b),
+    featured:(a, b) => P.indexOf(a) - P.indexOf(b),
     'price-asc':(a, b) => a.price - b.price,
     'price-desc':(a, b) => b.price - a.price,
     sillage:(a, b) => (b.sillage + b.longevity) - (a.sillage + a.longevity),
@@ -484,26 +497,21 @@ function applyFilters(animate = true){
   });
   $('.empty-state', grid).hidden = n > 0;
   $('#resultCount').textContent = `${n} ${n === 1 ? 'perfume' : 'perfumes'}`;
-  if (state) Flip.from(state, {
-    duration:.65, ease:'power3.inOut', absolute:true, scale:true,
-    onEnter:els => gsap.fromTo(els, {autoAlpha:0, scale:.85}, {autoAlpha:1, scale:1, duration:.55, ease:'expo.out'}),
-    onLeave:els => gsap.to(els, {autoAlpha:0, scale:.85, duration:.35}),
-  });
+  /* the new set rises in place: cards never leave the grid flow, so nothing can end up over the footer */
+  const shown = cards.filter(c => !c.hidden);
+  if (animate && !REDUCED && shown.length) gsap.fromTo(shown, {autoAlpha:0, y:18}, {autoAlpha:1, y:0, duration:.5, stagger:Math.min(.04, .35 / shown.length), ease:'expo.out', overwrite:false});
+  ScrollTrigger.refresh();
 }
 applyFilters(false);
 bindTilt(grid);
 /* deep links from the home page: perfumes.html?cat=…&scent=…&moment=…&q=…&buscar=1 */
 const qp = new URLSearchParams(location.search);
-if (qp.get('scent')) setScent(qp.get('scent'));
+if (scentOf(qp.get('scent'))) setScent(qp.get('scent'));
 else if (qp.get('moment')) setMoment(qp.get('moment'));
 if (qp.get('cat')) { const t = $(`.ctab[data-cat="${qp.get('cat')}"]`, catTabs); if (t) t.click(); }
 if (qp.get('gender')) {
   const g = qp.get('gender');
-  const GH = {mujer:['Perfumes <em>mujer</em>', 'Femeninos y unisex de perfil floral, frutal y dulce que lucen increíble en piel femenina.'],
-    hombre:['Perfumes <em>hombre</em>', 'Masculinos y unisex de perfil amaderado, aromático y especiado que funcionan perfecto en piel masculina.'],
-    unisex:['Perfumes <em>unisex</em>', 'Fragancias para todos: frescas, dulces, amaderadas y orientales.']};
-  if (GH[g] && $('#catHeroTitle')) { $('#catHeroTitle').innerHTML = GH[g][0]; $('.cat-hero > p').textContent = GH[g][1]; document.title = `Perfumes ${g} · Alto Urbano`; }
-  $('#gender').value = filters.gender = g; applyFilters(false);
+  $('#gender').value = filters.gender = g; syncHero(); applyFilters(false);
 }
 if (qp.get('q')) { $('#search').value = filters.q = qp.get('q'); applyFilters(false); }
 if (qp.get('buscar')) setTimeout(() => $('#search').focus(), 300);
@@ -523,9 +531,16 @@ if (brandsGrid) {
     'Al Haramain', 'Afnan', 'Jo Milano Paris'];
   const houses = [...ORDER, ...new Set(P.map(p => p.house))].filter((h, i, a) => a.indexOf(h) === i && P.some(p => p.house === h));
   const mono = h => h.split(/\s+/).filter(w => /^[A-ZÁÉÍÓÚ]/.test(w)).slice(0, 2).map(w => w[0]).join('');
+  /* real house logos (img/marcas), painted in gold through a mask; houses without one keep the monogram */
+  const LOGO = {'Xerjoff':'xerjoff.svg', 'Lorenzo Pazzaglia':'pazzaglia.png', 'Creed':'creed.svg', 'Parfums de Marly':'marly.png',
+    'Clive Christian':'clive.png', 'Roja Parfums':'roja.png', 'Tom Ford':'tomford.svg', 'Initio Parfums Privés':'initio.png', 'Amouage':'amouage.png',
+    'Dior':'dior.svg', 'Chanel':'chanel.svg', 'Jean Paul Gaultier':'jpg.svg', 'Yves Saint Laurent':'ysl.svg', 'Versace':'versace.svg',
+    'Lancôme':'lancome.svg', 'Carolina Herrera':'carolinaherrera.svg', 'Valentino':'valentino.svg', 'Al Haramain':'alharamain.png',
+    'Afnan':'afnan.png', 'Jo Milano Paris':'jomilano.svg'};
   const tile = (h, dup) => { const list = P.filter(p => p.house === h);
     return `<button class="brand-tile" data-brand="${h}"${dup ? ' aria-hidden="true" tabindex="-1"' : ''} aria-label="Ver perfumes ${h}">
-      <span class="bt-mono" aria-hidden="true">${mono(h)}</span><span class="bt-word">${h}</span>
+      ${LOGO[h] ? `<span class="bt-logo${/pazzaglia|clive/.test(LOGO[h]) ? ' emblem' : ''}" aria-hidden="true" style="-webkit-mask-image:url(img/marcas/${LOGO[h]});mask-image:url(img/marcas/${LOGO[h]})"></span>`
+        : `<span class="bt-mono" aria-hidden="true">${mono(h)}</span><span class="bt-word">${h}</span>`}
       <span class="bt-meta">${list.length} ${list.length === 1 ? 'perfume' : 'perfumes'}</span>
       <img class="bt-bottle" src="${list[0].cut}" alt="" loading="lazy" draggable="false"></button>`; };
   brandsGrid.innerHTML = houses.map(h => tile(h)).join('') + houses.map(h => tile(h, true)).join('');
@@ -1082,19 +1097,11 @@ function renderQuizResult(){
 if (quiz) renderQuiz(0);
 
 /* =====================================================================
-   CHROME: nav, cursor, newsletter, headings, smooth scroll
+   CHROME: nav, newsletter, headings, smooth scroll
    ===================================================================== */
 const nav = $('#nav');
 const onScroll = () => { const y = scrollY; nav.classList.toggle('scrolled', y > 40); document.documentElement.classList.toggle('bar-hidden', y > 40); };
 addEventListener('scroll', onScroll, {passive:true});
-
-const cursor = $('.cursor');
-if (FINE) {
-  const cx = gsap.quickTo(cursor, 'x', {duration:.35, ease:'power3'}), cy = gsap.quickTo(cursor, 'y', {duration:.35, ease:'power3'});
-  addEventListener('pointermove', e => { cx(e.clientX); cy(e.clientY); cursor.classList.add('on'); });
-  document.addEventListener('pointerover', e => cursor.classList.toggle('big', !!e.target.closest('[data-hover], a, button, .stage')));
-  document.addEventListener('pointerleave', () => cursor.classList.remove('on'));
-}
 
 if (!REDUCED) $$('.section-head h2, .quiz-box h2, .decant h2, .circle-copy h2').forEach(h => {
   gsap.fromTo(h, {clipPath:'inset(0 0 100% 0)', y:30}, {clipPath:'inset(0 0 0% 0)', y:0, duration:1.1, ease:'expo.out',
