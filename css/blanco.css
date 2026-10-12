@@ -1,0 +1,108 @@
+/* =====================================================================
+   SALAS BLANCAS — blanco perla que se abre desde el negro al bajar
+   ===================================================================== */
+section.room-white{
+  --onyx:#FBF9F5; --smoke:#FFFFFF; --smoke-2:#FFFFFF;
+  --ivory:#14110D; --ivory-dim:#5E5546; --muted:#9A8F7C;
+  --line:rgba(20,17,13,.09); --line-strong:rgba(154,116,38,.45);
+  --gold:#9A7426; --gold-pale:#7A5A1C; --gold-deep:#B8913F;
+  --gold-foil:linear-gradient(100deg,#6E521C 0%,#B8913F 28%,#E6C985 45%,#9A7426 62%,#5C4416 100%);
+  position:relative;isolation:isolate;color:var(--ivory);background:transparent!important;border-top:0!important}
+/* the white is its own layer, so it can open like a gallery door */
+.wbg{position:absolute;inset:0;z-index:-1;pointer-events:none;background:#FBF9F5;clip-path:inset(0 6% 0 6% round 48px);will-change:clip-path}
+.wbg::before{content:"";position:absolute;inset:0;opacity:.7;
+  background:radial-gradient(ellipse 70% 40% at 50% 0%,#FFFFFF,transparent 70%),radial-gradient(ellipse 60% 40% at 50% 100%,rgba(233,211,154,.18),transparent 70%)}
+/* warm light that follows the cursor across the white */
+.wbg::after{content:"";position:absolute;inset:0;opacity:0;transition:opacity .8s;
+  background:radial-gradient(520px circle at var(--lx,50%) var(--ly,30%),rgba(233,200,130,.16),transparent 60%)}
+.room-white.lit .wbg::after{opacity:1}
+@media (prefers-reduced-motion:reduce){.wbg{clip-path:none}}
+
+/* headings and copy */
+.room-white .section-head h2,.room-white .quiz-box h2{color:#14110D}
+.room-white h2 em{background-image:linear-gradient(100deg,#6E521C 0%,#B8913F 28%,#E6C985 45%,#9A7426 62%,#5C4416 100%)}
+.room-white .eyebrow{color:#9A7426}
+.room-white .eyebrow span{border-color:rgba(154,116,38,.5);color:#7A5A1C}
+.room-white .eyebrow::after{background:linear-gradient(90deg,rgba(154,116,38,.6),transparent)}
+.room-white .quiz-box .eyebrow::before{background:linear-gradient(270deg,rgba(154,116,38,.6),transparent)}
+.room-white .section-head p,.room-white .quiz-box > p{color:#5E5546}
+.room-white .link-more{color:#14110D;border-color:#B8913F}
+
+/* buttons on white: gold stays gold, ghost turns ink */
+.room-white .btn.ghost{color:#14110D;border-color:#14110D;background:transparent}
+.room-white .btn.ghost::before{background:#14110D}
+.room-white .btn.ghost:hover{color:#E9D39A}
+.room-white .chip{border-color:rgba(20,17,13,.16);color:#5E5546}
+.room-white .chip:hover{border-color:#9A7426;color:#14110D}
+.room-white .chip[aria-pressed="true"]{color:#14110D}
+.room-white .field input,.room-white .field select{background:#FFFFFF;color:#14110D;border-color:rgba(20,17,13,.14)}
+.room-white .toolbar{background:linear-gradient(#FBF9F5 72%,rgba(251,249,245,0))}
+
+/* porcelain vitrines */
+.room-white .card{background:#FFFFFF;border-color:rgba(20,17,13,.07);
+  box-shadow:0 1px 0 rgba(20,17,13,.03),0 30px 60px -42px rgba(60,40,10,.4)}
+.room-white .card:hover{border-color:rgba(154,116,38,.5);box-shadow:0 1px 0 rgba(20,17,13,.03),0 50px 80px -40px rgba(60,40,10,.5),0 0 0 1px rgba(233,211,154,.35)}
+.room-white .card::after{background:radial-gradient(420px circle at var(--mx,50%) var(--my,30%),rgba(233,200,130,.14),transparent 45%)}
+.room-white .card .stage.vitrine{border-bottom-color:rgba(20,17,13,.06);
+  background:radial-gradient(ellipse 58% 52% at 50% 38%,#FFFFFF,rgba(255,255,255,0) 72%),linear-gradient(180deg,#F3EEE5,#E9E2D5 78%)}
+.room-white .vitrine::after{background:linear-gradient(180deg,rgba(255,255,255,.95) 0,rgba(255,255,255,0) 1px,rgba(226,217,201,.55) 1px,#E4DBCB 92%)}
+.room-white .v-spot{opacity:.8;background:conic-gradient(from 180deg at 50% 0%,transparent 158deg,rgba(255,255,255,.75) 172deg,#FFFFFF 180deg,rgba(255,255,255,.75) 188deg,transparent 202deg)}
+.room-white .vitrine .pimg{filter:drop-shadow(-10px 18px 14px rgba(60,40,10,.22))}
+.room-white .card:hover .vitrine .pimg{filter:drop-shadow(-12px 32px 22px rgba(60,40,10,.22)) drop-shadow(0 0 30px rgba(255,255,255,.8))}
+.room-white .v-refl{opacity:.16}
+.room-white .v-num{color:rgba(122,90,28,.65)}
+.room-white .badge{background:#14110D;color:#E9D39A;border-color:#14110D}
+.room-white .cmp-toggle{background:rgba(255,255,255,.88);color:#7A5A1C;border-color:rgba(154,116,38,.4)}
+.room-white .cmp-toggle[aria-pressed="true"]{background:#14110D;color:#E9D39A;border-color:#14110D}
+.room-white .peek{background:rgba(255,255,255,.95);color:#14110D;border-color:rgba(20,17,13,.08)}
+.room-white .card .house{color:#9A7426}
+.room-white .card h3{color:#14110D}
+.room-white .card .fam{color:#8A7F6B}
+.room-white .price span{color:#14110D}
+.room-white .price small{color:#9A8F7C}
+.room-white .card-foot{border-top-color:rgba(20,17,13,.08)}
+
+/* quiz */
+.room-white .opt{background:#FFFFFF;border-color:rgba(20,17,13,.08);box-shadow:0 20px 40px -32px rgba(60,40,10,.4)}
+.room-white .opt:hover{background:#FFFFFF;border-color:#9A7426;box-shadow:0 30px 50px -30px rgba(60,40,10,.45)}
+.room-white .q-progress i{background:rgba(20,17,13,.1)}
+.room-white .q-progress i.on{background:var(--gold-foil)}
+
+/* kit: the gift box stays black, like a real case on a white counter */
+.room-white .kit-tile{background:#FFFFFF;border-color:rgba(20,17,13,.08);box-shadow:0 18px 34px -28px rgba(60,40,10,.45)}
+.room-white .kit-tile[aria-pressed="true"]{background:#FFF9EC;border-color:#9A7426}
+.room-white .kit-box{--onyx:#0A0907;--ivory:#F3EBDB;--ivory-dim:#B3A88F;--gold:#C9A44C;--gold-pale:#E9D39A;--muted:#7A705F;--line:rgba(201,164,76,.14);--line-strong:rgba(201,164,76,.42)}
+.room-white .kit-size button[aria-pressed="true"]{color:#14110D}
+
+/* clients */
+.room-white .club-chips span{color:#7A5A1C;border-color:rgba(154,116,38,.4)}
+.room-white .delivery{border-color:rgba(20,17,13,.06);box-shadow:0 30px 50px -36px rgba(60,40,10,.5)}
+
+/* nav turns to white glass over the white rooms */
+.nav,.nav ul a,.brand span,.cart-btn,.icon-btn,.icon-btn svg{transition:background .6s,color .6s,border-color .6s,stroke .6s}
+html.nav-light .nav.scrolled{background:rgba(251,249,245,.86);border-bottom-color:rgba(20,17,13,.08)}
+html.nav-light .nav.scrolled ul a{color:#14110D}
+html.nav-light .nav.scrolled ul a:hover{color:#9A7426}
+html.nav-light .nav.scrolled .brand span{color:#7A5A1C}
+html.nav-light .nav.scrolled .icon-btn,html.nav-light .nav.scrolled .cart-btn{border-color:rgba(20,17,13,.2);color:#14110D}
+html.nav-light .nav.scrolled .icon-btn svg{stroke:#14110D}
+@media (max-width:560px){
+  html.nav-light .nav.scrolled .cart-btn::before{filter:brightness(.25)}
+  .wbg{clip-path:inset(0 4% 0 4% round 26px)}
+}
+
+/* la casa (manifiesto) en blanco: tinta y oro */
+.room-white .man-text{color:#14110D}
+.room-white .man-text .w.hl{color:#9A7426}
+.room-white .man-frame{border-color:rgba(154,116,38,.22)}
+.room-white .man-frame i{border-color:#B8913F}
+.room-white .man-crest{filter:drop-shadow(0 14px 26px rgba(110,80,30,.25))}
+.room-white .man-sign{color:#9A7426}
+.room-white .man-sign span{color:#8A7F6B}
+.room-white .man-facts{border-top-color:rgba(154,116,38,.28)}
+.room-white .man-facts li + li,.room-white .man-facts li:nth-child(n+3){border-color:rgba(154,116,38,.2)}
+.room-white .man-facts b{background-image:linear-gradient(100deg,#6E521C 0%,#B8913F 30%,#E2C27A 48%,#9A7426 64%,#5C4416 100%)}
+.room-white .man-facts span{color:#8A7F6B}
+.room-white .eyebrow.center::before{background:linear-gradient(270deg,rgba(154,116,38,.6),transparent)}
+/* familias y momentos: las tarjetas oscuras quedan como piezas sobre el blanco */
+.room-white .scent,.room-white .moment{box-shadow:0 30px 60px -36px rgba(40,28,10,.55)}

@@ -1,0 +1,411 @@
+/* Catálogo real de Alto Urbano (stock visto en fotos de la tienda).
+   Notas: tomadas de fichas de retailers (Notino, Fragrantica/thescentbase y similares).
+   Precios CLP: referencia del mercado chileno (Falabella, Lider, Ripley, oct-2026). Ajustar a los precios reales.
+   img     -> foto oficial del producto (descargada de la web de cada marca). Si es null se dibuja el frasco en CSS.
+   bottle  -> frasco CSS de respaldo · three -> frasco 3D del hero (solo destacados) */
+window.AU_FAMILIES = {
+  fresco:    'Frescos y frutales',
+  dulce:     'Dulces y gourmand',
+  ambar:     'Ámbar y especiados',
+  amaderado: 'Amaderados y oud',
+  floral:    'Florales',
+};
+
+window.AU_ACCORD_COLORS = {
+  'Ámbar':'#C7792B', 'Amaderado':'#7A5434', 'Dulce':'#D9668F', 'Frutal':'#E0703A', 'Cítrico':'#E6CF3C',
+  'Almizclado':'#C9B8C9', 'Avainillado':'#E8D2A6', 'Aromático':'#5E9A78', 'Lavanda':'#9C88C9', 'Especiado':'#C04A2C',
+  'Tabaco':'#8A5A2B', 'Miel':'#E0A82E', 'Incienso':'#8C7D6E', 'Cacao':'#6B3E26', 'Caramelo':'#C68A3E',
+  'Verde':'#6FA35A', 'Fresco especiado':'#7FB5A8', 'Floral':'#E88FB0', 'Oud':'#5A3B2A', 'Ahumado':'#6B625A', 'Rosa':'#D45A78', 'Cuero':'#7A4E2E', 'Marino':'#3D8FB8', 'Ozónico':'#9CC9E0', 'Tropical':'#F2A33A', 'Coñac':'#A35A1F', 'Ron':'#8E4A1C',
+};
+
+window.AU_PRODUCTS = [
+  {
+    id:'erbapura', featured:true, cut:'img/cut/erbapura.png', ar:.4481, capCut:{y:.305, x:.505, w:.402}, pump:'gold', moments:['cita','dia','regalo'], nozzle:[0.5,0.37], mist:'#c4f1ec',
+    story:'Diez de la mañana en Sicilia: naranja recién cortada y limón al sol. Al mediodía la fruta se derrite en almizcle blanco. De noche queda vainilla tibia en el cuello de la camisa, y alguien te pregunta qué llevas puesto.', house:'Xerjoff', short:'XERJOFF', name:'Erba Pura', conc:'Eau de Parfum', ml:100, price:239990,
+    family:'fresco', gender:'unisex', time:'ambos', seasons:['Primavera','Verano','Otoño'],
+    top:['Naranja siciliana','Limón','Bergamota'], heart:['Frutas mediterráneas'], base:['Almizcle blanco','Vainilla de Madagascar','Ámbar'],
+    accords:[['Frutal',100],['Dulce',80],['Almizclado',60],['Cítrico',54],['Avainillado',48]],
+    longevity:5, sillage:5, badge:'Bestia', img:'img/erbapura.png',
+    blurb:'Una explosión de fruta jugosa sobre almizcle y vainilla. Se siente a metros de distancia y dura todo el día.',
+    bottle:{shape:'rect', liquid:'#E59A2F', cap:'gold', capShape:'cube'},
+    three:{liquid:0x4FB3B0, tint:0x3FA6A8, cap:'gold', capShape:'facet', body:[1.05,.98,.95]},
+  },
+  {
+    id:'amberoudgold', featured:true, cut:'img/cut/amberoudgold.png', ar:.6789, capCut:{y:.245, x:.545, w:.432}, pump:'gold', moments:['noche','cita','regalo'], nozzle:[0.5,0.25], mist:'#ffe2a0',
+    story:'Abre como un jugo de melón y piña recién servido, verde y brillante. En una hora se vuelve ámbar dulce, casi de pastelería. Al final del día deja una estela de vainilla y maderas que se siente a metros.', like:'Erba Pura de Xerjoff', house:'Al Haramain', short:'AL HARAMAIN', name:'Amber Oud Gold Edition', conc:'Eau de Parfum', ml:120, price:64990,
+    family:'dulce', gender:'unisex', time:'ambos', seasons:['Otoño','Invierno','Primavera'],
+    top:['Bergamota','Notas verdes'], heart:['Melón','Piña','Notas gourmand','Ámbar'], base:['Maderas','Vainilla','Almizcle'],
+    accords:[['Dulce',100],['Frutal',82],['Avainillado',70],['Ámbar',60],['Almizclado',45]],
+    longevity:5, sillage:5, badge:'Más vendido', img:'img/amberoudgold.jpg',
+    blurb:'Melón, piña y ámbar dulce en un frasco dorado. Rendimiento de perfume nicho a precio accesible.',
+    bottle:{shape:'squat', liquid:'#D9A441', glass:'gold', cap:'gold', capShape:'cube'},
+    three:{liquid:0xD9A441, tint:0xD9A441, cap:'gold', capShape:'cube', body:[1.1,1,.8]},
+  },
+  {
+    id:'gosroyale', featured:true, cut:'img/cut/gosroyale.png?v=3', ar:.44, capCut:{y:.2, x:.503, w:.601}, pump:'gold', moments:['noche','cita','regalo'], nozzle:[0.5,0.271], mist:'#fff4e2',
+    story:'Una tableta de chocolate con avellanas que se abre sobre la mesa de un casino. El jazmín aparece entre las cartas y el cedro lo vuelve elegante. Al final, caramelo y ambroxan: un gourmand para ganar la noche.', house:'Jo Milano Paris', short:'♠ ROYALE', name:'Game of Spades Royale', conc:'Parfum', ml:100, price:109990,
+    family:'dulce', gender:'unisex', time:'noche', seasons:['Otoño','Invierno'],
+    top:['Avellana','Cacao'], heart:['Jazmín sambac','Cedro'], base:['Caramelo','Ambroxan','Musgo'],
+    accords:[['Dulce',100],['Caramelo',80],['Cacao',72],['Amaderado',56],['Floral',36]],
+    longevity:5, sillage:4, badge:'Nuevo ingreso', img:'img/gosroyale.png',
+    blurb:'Avellana y cacao que terminan en caramelo y ambroxan. Gourmand elegante, ideal para la noche.',
+    bottle:{shape:'tall', liquid:'#EADBB8', glass:'white', cap:'gold', capShape:'facet'},
+    three:{liquid:0xF4F0E8, tint:0xFFFFFF, cap:'gold', capShape:'cube', body:[.9,1.12,.9]},
+  },
+  {
+    id:'naxos', featured:true, cut:'img/cut/naxos.png', ar:.4871, capCut:{y:.265, x:.489, w:.330}, pump:'gold', moments:['noche','regalo'], nozzle:[0.5,0.38], mist:'#fff0c4',
+    story:'La isla de Naxos en un frasco: lavanda silvestre y limón en la salida, miel tibia y canela en el corazón. Horas después, tabaco y haba tonka dorados. Cálido, elegante y muy reconocible.', house:'Xerjoff', short:'XERJOFF 1861', name:'Naxos', conc:'Eau de Parfum', ml:100, price:209990,
+    family:'dulce', gender:'unisex', time:'noche', seasons:['Otoño','Invierno'],
+    top:['Lavanda','Bergamota','Limón'], heart:['Miel','Canela','Cashmeran','Jazmín'], base:['Hoja de tabaco','Haba tonka','Vainilla'],
+    accords:[['Miel',100],['Dulce',82],['Tabaco',64],['Aromático',52],['Avainillado',50]],
+    longevity:5, sillage:4, badge:null, img:'img/naxos.png',
+    blurb:'Miel siciliana, lavanda y tabaco. Un homenaje a la isla, dorado de principio a fin.',
+    bottle:{shape:'rect', liquid:'#D49A2A', cap:'gold', capShape:'facet'},
+    three:{liquid:0xEADFA0, tint:0xF6EBC8, cap:'gold', capShape:'facet', body:[1.05,1,.95]},
+  },
+  {
+    id:'aquadubai', featured:true, cut:'img/cut/aquadubai.png', ar:.5409, capCut:{y:.235, x:.508, w:.538}, pump:'silver', moments:['dia'], nozzle:[0.5,0.26], mist:'#c7f2ff',
+    story:'Cítricos helados y hojas verdes recién cortadas al abrir. Luego melón, piña y grosella negra, frescos y jugosos. El fondo de almizcle limpio lo deja impecable durante horas, ideal para el calor.', like:'Imagination de Louis Vuitton', house:'Al Haramain', short:'AL HARAMAIN', name:'Amber Oud Aqua Dubai', conc:'Extrait de Parfum', ml:100, price:62990,
+    family:'fresco', gender:'unisex', time:'día', seasons:['Primavera','Verano'],
+    top:['Bergamota','Notas verdes','Mandarina'], heart:['Melón','Piña','Ámbar','Grosella negra'], base:['Almizcle','Vainilla','Gálbano','Petitgrain'],
+    accords:[['Cítrico',100],['Frutal',85],['Verde',70],['Aromático',55],['Almizclado',45]],
+    longevity:4, sillage:4, badge:'Nuevo ingreso', img:'img/aquadubai.jpg',
+    blurb:'Cítricos, mandarina y fruta verde con fondo de almizcle. Fresco y luminoso para el calor.',
+    bottle:{shape:'squat', liquid:'#7FD3D0', glass:'teal', cap:'silver', capShape:'cube'},
+  },
+  {
+    id:'amberoudbleu', featured:true, cut:'img/cut/amberoudbleu.png', ar:.6237, capCut:{y:.25, x:.535, w:.467}, pump:'gold', moments:['dia'], nozzle:[0.5,0.25], mist:'#d2e2ff',
+    story:'Pomelo y menta como un chapuzón en agua fría. El jengibre y el vetiver le dan carácter. Abajo, sándalo e incienso: fresco, pero con la profundidad de un perfume de noche.', house:'Al Haramain', short:'AL HARAMAIN', name:'Amber Oud Bleu Edition', conc:'Eau de Parfum', ml:60, price:59990,
+    family:'fresco', gender:'unisex', time:'día', seasons:['Primavera','Verano','Otoño'],
+    top:['Pomelo','Limón','Menta','Pimienta rosa'], heart:['Jengibre','Vetiver','Jazmín'], base:['Sándalo','Pachulí','Cedro','Olíbano'],
+    accords:[['Cítrico',100],['Amaderado',80],['Aromático',64],['Fresco especiado',58],['Incienso',40]],
+    longevity:4, sillage:4, badge:null, img:'img/amberoudbleu.jpg',
+    blurb:'Pomelo, menta y jengibre sobre sándalo e incienso. Fresco, limpio y con carácter.',
+    bottle:{shape:'squat', liquid:'#3E6FC4', glass:'blue', cap:'silver', capShape:'cube'},
+  },
+  {
+    id:'9pm', featured:true, cut:'img/cut/9pm.png', ar:.4631, capCut:{y:.155, x:.489, w:.411}, pump:'silver', moments:['noche','cita'], nozzle:[0.5,0.2], mist:'#f4f1ea',
+    story:'Manzana roja y canela al salir de casa. Azahar a mitad de la cena. Vainilla, ámbar y haba tonka cuando la noche se alarga. Dulce, seductor y con una proyección que no pasa desapercibida.', like:'Ultra Male de Jean Paul Gaultier', house:'Afnan', short:'AFNAN', name:'9PM', conc:'Eau de Parfum', ml:100, price:39990,
+    family:'dulce', gender:'hombre', time:'noche', seasons:['Otoño','Invierno'],
+    top:['Manzana','Canela','Lavanda','Bergamota'], heart:['Azahar','Lirio de los valles'], base:['Pachulí','Ámbar','Vainilla','Haba tonka'],
+    accords:[['Avainillado',100],['Dulce',86],['Ámbar',70],['Especiado',56],['Lavanda',48]],
+    longevity:4, sillage:4, badge:'Precio top', img:'img/9pm.jpg',
+    blurb:'Manzana y canela que se funden en vainilla y ámbar. El favorito para salir de noche.',
+    bottle:{shape:'tall', liquid:'#1a1a1a', glass:'dark', cap:'gold', capShape:'round'},
+  },
+  /* Xerjoff, colección ampliada (oct-2026). Fotos: xerjoff.com. Notas: ficha oficial y retailers.
+     Precios: referencia según distribuidores; confirmar con Nico. */
+  {
+    id:'torino21', featured:false, cut:'img/cut/torino21.png', ar:.4829, capCut:{y:.32, x:.493, w:.36}, pump:'gold', moments:['dia'], nozzle:[0.5,0.4], mist:'#e6f4ff',
+    story:'Menta, limón y albahaca recién cortada, como una mañana de primavera en Turín. Después lavanda, romero y grosella negra. Termina en un almizcle limpio con verbena. Creado para las Nitto ATP Finals.', house:'Xerjoff', short:'XERJOFF 1861', name:'Torino21', conc:'Eau de Parfum', ml:100, price:259990,
+    family:'fresco', gender:'unisex', time:'día', seasons:['Primavera','Verano'],
+    top:['Menta','Limón','Tomillo','Albahaca'], heart:['Jazmín','Romero','Grosella negra','Lavanda'], base:['Almizcle','Verbena'],
+    accords:[['Aromático',100],['Verde',84],['Cítrico',72],['Lavanda',54],['Almizclado',46]],
+    longevity:3, sillage:3, badge:null, img:'img/cut/torino21.png',
+    blurb:'Menta, albahaca y limón sobre un almizcle limpio. El fresco más elegante de Xerjoff.',
+    bottle:{shape:'rect', liquid:'#2a3fa0', glass:'blue', cap:'gold', capShape:'facet'},
+  },
+  {
+    id:'torino22', featured:false, cut:'img/cut/torino22.png', ar:.4829, capCut:{y:.32, x:.493, w:.36}, pump:'gold', moments:['dia','cita'], nozzle:[0.5,0.4], mist:'#eef0ff',
+    story:'Bergamota con un toque de azafrán y eucalipto al abrir. El corazón es salvia, mate y madera de guayaco, seco y especiado. El fondo de maderas secas y almizcle lo deja sobrio y distinguido.', house:'Xerjoff', short:'XERJOFF 1861', name:'Torino22', conc:'Eau de Parfum', ml:100, price:259990,
+    family:'amaderado', gender:'unisex', time:'ambos', seasons:['Primavera','Otoño'],
+    top:['Bergamota','Azafrán','Eucalipto'], heart:['Salvia','Mate','Madera de guayaco'], base:['Maderas secas','Almizcle'],
+    accords:[['Aromático',100],['Amaderado',86],['Especiado',62],['Fresco especiado',56],['Almizclado',44]],
+    longevity:4, sillage:3, badge:null, img:'img/cut/torino22.png',
+    blurb:'Azafrán, mate y maderas secas. Aromático, sobrio y fácil de llevar todo el día.',
+    bottle:{shape:'rect', liquid:'#24318a', glass:'blue', cap:'gold', capShape:'facet'},
+  },
+  {
+    id:'erbagold', featured:false, cut:'img/cut/erbagold.png', ar:.4868, capCut:{y:.322, x:.5, w:.36}, pump:'gold', moments:['dia','regalo'], nozzle:[0.5,0.4], mist:'#fff3c2',
+    story:'Limón de Amalfi, naranja y jengibre para un comienzo luminoso. Luego manzana verde, melón y pera con cardamomo y canela. Se asienta en almizcle, ámbar y vainilla de Madagascar: el hermano dorado del Erba Pura.', house:'Xerjoff', short:'XERJOFF 1861', name:'Erba Gold', conc:'Eau de Parfum', ml:100, price:279990,
+    family:'fresco', gender:'unisex', time:'ambos', seasons:['Primavera','Verano','Otoño'],
+    top:['Limón de Amalfi','Bergamota','Naranja','Jengibre'], heart:['Manzana verde','Melón','Pera','Cardamomo','Canela'], base:['Almizcle','Ámbar','Vainilla de Madagascar','Maderas'],
+    accords:[['Frutal',100],['Cítrico',82],['Especiado',58],['Almizclado',52],['Avainillado',46]],
+    longevity:4, sillage:4, badge:null, img:'img/cut/erbagold.png',
+    blurb:'Cítricos, frutas jugosas y especias doradas. Si te gusta Erba Pura, este es su versión más luminosa.',
+    bottle:{shape:'rect', liquid:'#F2B705', cap:'gold', capShape:'facet'},
+  },
+  {
+    id:'alexandria2', featured:false, cut:'img/cut/alexandria2.png', ar:.4868, capCut:{y:.322, x:.5, w:.36}, pump:'gold', moments:['noche','cita','regalo'], nozzle:[0.5,0.4], mist:'#ffe2c4',
+    story:'Palisandro, lavanda, canela y manzana en la salida. Un corazón de rosa, cedro y muguete. Horas después, oud, sándalo, ámbar y vainilla. Un oriental amaderado de 2012 que se convirtió en leyenda.', house:'Xerjoff', short:'XERJOFF 1861', name:'Alexandria II', conc:'Parfum', ml:100, price:389990,
+    family:'amaderado', gender:'unisex', time:'noche', seasons:['Otoño','Invierno'],
+    top:['Palisandro','Lavanda','Canela','Manzana'], heart:['Rosa','Cedro','Lirio de los valles'], base:['Oud','Sándalo','Ámbar','Vainilla','Almizcle'],
+    accords:[['Amaderado',100],['Oud',86],['Ámbar',70],['Especiado',58],['Avainillado',50]],
+    longevity:5, sillage:4, badge:'Nuevo ingreso', img:'img/cut/alexandria2.png',
+    blurb:'Oud, rosa y sándalo con un toque de canela. El oriental amaderado más famoso de Xerjoff.',
+    bottle:{shape:'rect', liquid:'#5a1a10', glass:'brown', cap:'gold', capShape:'facet'},
+  },
+];
+
+/* Colección ampliada (oct-2026): nicho, alta perfumería, diseñador y Lorenzo Pazzaglia.
+   Fotos: webs oficiales (Creed, Parfums de Marly, Initio, Amouage, Clive Christian, Roja, Tom Ford),
+   allyours.com (Pazzaglia) y fimgs.net/Fragrantica (Dior, Chanel, JPG, YSL, Versace, MFK, Kilian).
+   Notas: fichas oficiales y retailers. Precios CLP: referencia de mercado, confirmar con Nico. */
+(() => {
+  const base = o => Object.assign({
+    featured:false, hero:false, pump:'gold', nozzle:[.5, .3], mist:'#fff4e2', badge:null, gender:'unisex',
+    bottle:{shape:'rect', liquid:'#2a2622', cap:'black', capShape:'round'},
+  }, o, {cut:`img/cut/${o.id}.png?v=3`, img:`img/cut/${o.id}.png?v=3`, short:o.house.toUpperCase()});
+  const PZ = {house:'Lorenzo Pazzaglia', conc:'Extrait de Parfum', ml:50, price:169990, cat:'nicho', pump:'silver'};
+  window.AU_PRODUCTS.push(...[
+    /* ---------- nicho ---------- */
+    {id:'aventus', cat:'nicho', house:'Creed', name:'Aventus', conc:'Eau de Parfum', ml:100, price:449990, gender:'hombre', badge:'Más vendido',
+     ar:.5418, capCut:{y:.25, x:.5, w:.3}, pump:'silver', family:'fresco', time:'ambos', seasons:['Primavera','Verano','Otoño'], moments:['dia','cita','regalo'],
+     top:['Piña','Bergamota','Grosella negra','Manzana'], heart:['Abedul','Pachulí','Jazmín','Rosa'], base:['Almizcle','Musgo de roble','Ámbar gris','Vainilla'],
+     accords:[['Frutal',100],['Ahumado',78],['Amaderado',70],['Cítrico',58],['Almizclado',46]], longevity:4, sillage:4,
+     story:'Piña jugosa y bergamota de Calabria al abrir, abedul ahumado en el corazón y un fondo de musgo de roble y ámbar gris. El perfume masculino más imitado del mundo, en su versión original.',
+     blurb:'Piña, abedul ahumado y bergamota. El ícono de Creed que todos reconocen.'},
+    {id:'layton', cat:'nicho', hero:true, house:'Parfums de Marly', name:'Layton', conc:'Eau de Parfum', ml:125, price:319990, gender:'hombre',
+     ar:.5386, capCut:{y:.25, x:.456, w:.245}, family:'dulce', time:'noche', seasons:['Otoño','Invierno'], moments:['noche','cita','regalo'],
+     top:['Manzana','Lavanda','Bergamota','Mandarina'], heart:['Geranio','Violeta','Jazmín'], base:['Vainilla','Cardamomo','Pimienta','Pachulí','Guayaco'],
+     accords:[['Avainillado',100],['Lavanda',80],['Especiado',70],['Frutal',56],['Amaderado',50]], longevity:5, sillage:5,
+     story:'Manzana y lavanda frescas al abrir, un corazón floral de geranio y violeta, y un fondo cremoso de vainilla, cardamomo y pachulí. Elegante, sensual y con una estela que se nota.',
+     blurb:'Manzana, lavanda y vainilla especiada. Elegancia que dura todo el día.'},
+    {id:'delina', cat:'nicho', hero:true, house:'Parfums de Marly', name:'Delina', conc:'Eau de Parfum', ml:75, price:299990, gender:'mujer',
+     ar:.4894, capCut:{y:.182, x:.5, w:.285}, pump:'silver', family:'floral', time:'ambos', seasons:['Primavera','Otoño'], moments:['cita','regalo'],
+     top:['Lichi','Ruibarbo','Bergamota','Nuez moscada'], heart:['Rosa turca','Peonía','Vainilla'], base:['Cashmeran','Almizcle','Incienso','Vetiver'],
+     accords:[['Rosa',100],['Frutal',80],['Almizclado',60],['Floral',56],['Dulce',48]], longevity:4, sillage:4,
+     story:'Lichi dulce y ruibarbo al abrir, un corazón de rosa turca y peonía, y un fondo suave de almizcle y cashmeran. Romántico y adictivo.',
+     blurb:'Rosa turca y lichi sobre almizcles suaves. El floral más deseado de Marly.'},
+    {id:'oudgreatness', cat:'nicho', hero:true, house:'Initio Parfums Privés', name:'Oud for Greatness', conc:'Eau de Parfum', ml:90, price:339990,
+     ar:.608, capCut:{y:.2, x:.55, w:.35}, family:'amaderado', time:'noche', seasons:['Otoño','Invierno'], moments:['noche','regalo'],
+     top:['Azafrán','Nuez moscada','Lavanda'], heart:['Oud'], base:['Pachulí','Almizcle'],
+     accords:[['Oud',100],['Especiado',72],['Amaderado',66],['Lavanda',40],['Almizclado',38]], longevity:5, sillage:5,
+     story:'Azafrán y nuez moscada abren paso a un oud natural, crudo y majestuoso, envuelto en pachulí y almizcle. Potente, estructurado y de estela imponente.',
+     blurb:'Oud natural con azafrán. Uno de los oud más respetados del mundo.'},
+    {id:'interlude', cat:'nicho', house:'Amouage', name:'Interlude Man', conc:'Eau de Parfum', ml:100, price:369990, gender:'hombre',
+     ar:.4813, capCut:{y:.2, x:.539, w:.31}, family:'ambar', time:'noche', seasons:['Otoño','Invierno'], moments:['noche'],
+     top:['Orégano','Pimienta','Bergamota'], heart:['Incienso','Ámbar','Opopónaco','Cisto','Mirra'], base:['Cuero','Oud','Sándalo','Pachulí'],
+     accords:[['Incienso',100],['Ámbar',84],['Ahumado',70],['Cuero',60],['Especiado',56]], longevity:5, sillage:5,
+     story:'Orégano y pimienta al abrir, un corazón denso de incienso, ámbar y mirra, y un fondo de cuero, oud y sándalo. El caos ordenado de Amouage, de Omán al mundo.',
+     blurb:'Incienso, ámbar y cuero ahumado. Intenso, profundo y muy perdurable.'},
+    {id:'br540', cat:'nicho', house:'Maison Francis Kurkdjian', name:'Baccarat Rouge 540', conc:'Eau de Parfum', ml:70, price:349990, badge:'Más vendido',
+     ar:.609, capCut:{y:.206, x:.485, w:.488}, family:'ambar', time:'ambos', seasons:['Otoño','Invierno','Primavera'], moments:['cita','noche','regalo'],
+     top:['Azafrán','Jazmín'], heart:['Amberwood','Ámbar gris'], base:['Resina de abeto','Cedro'],
+     accords:[['Ámbar',100],['Amaderado',80],['Dulce',62],['Especiado',44],['Floral',40]], longevity:5, sillage:5,
+     story:'Azafrán y jazmín luminosos sobre una estela de amberwood y ámbar gris, con un fondo resinoso de abeto y cedro. Aireado, mineral y reconocible a metros.',
+     blurb:'Azafrán, jazmín y ámbar. El perfume que se volvió un fenómeno.'},
+    /* ---------- lo más caro del mercado ---------- */
+    {id:'cliveno1', cat:'lujo', house:'Clive Christian', name:'No1 Masculine', conc:'Parfum', ml:50, price:749990, gender:'hombre', badge:'Alta perfumería',
+     ar:.3888, capCut:{y:.25, x:.492, w:.3}, family:'amaderado', time:'noche', seasons:['Otoño','Invierno'], moments:['noche','regalo'],
+     top:['Pimienta de Jamaica','Lima','Bergamota','Cardamomo'], heart:['Jazmín','Rosa','Nuez moscada'], base:['Sándalo','Vetiver','Haba tonka','Vainilla'],
+     accords:[['Amaderado',100],['Especiado',80],['Ámbar',66],['Cítrico',48],['Floral',40]], longevity:5, sillage:4,
+     story:'Una obra de 222 ingredientes raros: pimienta de Jamaica y lima al abrir, un corazón floral especiado y un fondo de vetiver, haba tonka y sándalo de 50 años.',
+     blurb:'222 ingredientes raros y sándalo de 50 años. Uno de los perfumes más caros del mundo.'},
+    {id:'elysium', cat:'lujo', house:'Roja Parfums', name:'Elysium Pour Homme', conc:'Parfum', ml:50, price:489990, gender:'hombre', badge:'Alta perfumería',
+     ar:.6889, capCut:{y:.259, x:.503, w:.383}, family:'fresco', time:'ambos', seasons:['Primavera','Verano'], moments:['dia','cita','regalo'],
+     top:['Pomelo','Limón','Lima','Bergamota'], heart:['Vetiver','Enebro','Jazmín','Rosa','Lirio de los valles'], base:['Ámbar gris','Cuero','Benjuí','Vainilla'],
+     accords:[['Cítrico',100],['Aromático',72],['Amaderado',60],['Ámbar',54],['Floral',40]], longevity:4, sillage:4,
+     story:'Cítricos brillantes y vetiver verde, un corazón floral luminoso y un fondo de ámbar gris y cuero suave. La frescura llevada a la alta perfumería de Roja Dove.',
+     blurb:'Cítricos, vetiver y ámbar gris. El fresco de lujo de Roja Parfums.'},
+    {id:'oudwood', cat:'lujo', house:'Tom Ford', name:'Oud Wood', conc:'Eau de Parfum · Private Blend', ml:50, price:329990,
+     ar:.4313, capCut:{y:.2, x:.493, w:.5}, family:'amaderado', time:'ambos', seasons:['Otoño','Invierno'], moments:['cita','noche','regalo'],
+     top:['Cardamomo','Pimienta de Sichuan','Palo de rosa'], heart:['Oud','Sándalo','Vetiver'], base:['Haba tonka','Vainilla','Ámbar'],
+     accords:[['Oud',100],['Amaderado',90],['Especiado',56],['Ámbar',50],['Avainillado',40]], longevity:4, sillage:3,
+     story:'Cardamomo y pimienta de Sichuan sobre un oud suave y pulido, con sándalo y vetiver. Termina en haba tonka y ámbar. El oud más fácil de llevar.',
+     blurb:'Oud, sándalo y cardamomo. Sofisticado y discreto, de la línea Private Blend.'},
+    {id:'tobaccovanille', cat:'lujo', hero:true, house:'Tom Ford', name:'Tobacco Vanille', conc:'Eau de Parfum · Private Blend', ml:50, price:329990,
+     ar:.5238, capCut:{y:.223, x:.492, w:.6}, family:'dulce', time:'noche', seasons:['Otoño','Invierno'], moments:['noche','regalo'],
+     top:['Hoja de tabaco','Especias'], heart:['Vainilla','Cacao','Haba tonka','Flor de tabaco'], base:['Frutos secos','Maderas'],
+     accords:[['Tabaco',100],['Avainillado',90],['Dulce',70],['Especiado',60],['Cacao',44]], longevity:5, sillage:4,
+     story:'Hoja de tabaco y especias cálidas, vainilla y cacao en el corazón, y frutos secos al final. Opulento y envolvente, como un club inglés.',
+     blurb:'Tabaco, vainilla y cacao. El clásico invernal de Tom Ford.'},
+    {id:'angelsshare', cat:'lujo', house:'Kilian Paris', name:"Angels' Share", conc:'Eau de Parfum', ml:50, price:339990,
+     ar:.81, capCut:{y:.14, x:.5, w:.4}, family:'dulce', time:'noche', seasons:['Otoño','Invierno'], moments:['noche','cita','regalo'],
+     top:['Coñac'], heart:['Canela','Haba tonka','Roble'], base:['Praliné','Vainilla','Sándalo'],
+     accords:[['Coñac',100],['Dulce',86],['Avainillado',70],['Especiado',60],['Amaderado',50]], longevity:4, sillage:4,
+     story:'La parte del coñac que se evapora en las barricas: coñac, canela y roble tostado sobre praliné y vainilla. Dulce, cálido y adictivo.',
+     blurb:'Coñac, canela y praliné. El gourmand de lujo de Kilian.'},
+    /* ---------- diseñador ---------- */
+    {id:'sauvageelixir', cat:'disenador', hero:true, house:'Dior', name:'Sauvage Elixir', conc:'Parfum', ml:60, price:159990, gender:'hombre', badge:'Más vendido', pump:'silver',
+     ar:.5529, capCut:{y:.2, x:.496, w:.45}, family:'ambar', time:'noche', seasons:['Otoño','Invierno'], moments:['noche','cita'],
+     top:['Pomelo','Canela','Nuez moscada','Cardamomo'], heart:['Lavanda'], base:['Regaliz','Sándalo','Ámbar','Pachulí','Vetiver'],
+     accords:[['Especiado',100],['Lavanda',80],['Amaderado',70],['Ámbar',60],['Fresco especiado',50]], longevity:5, sillage:5,
+     story:'Pomelo y especias calientes al abrir, un corazón de lavanda y un fondo de regaliz, sándalo y ámbar. La versión más intensa y concentrada de Sauvage.',
+     blurb:'Especias, lavanda y regaliz. El Sauvage más intenso.'},
+    {id:'bleuparfum', cat:'disenador', house:'Chanel', name:'Bleu de Chanel Parfum', conc:'Parfum', ml:100, price:189990, gender:'hombre', pump:'silver',
+     ar:.7186, capCut:{y:.253, x:.502, w:.291}, family:'amaderado', time:'ambos', seasons:['Todo el año'], moments:['dia','cita','regalo'],
+     top:['Limón','Bergamota','Menta','Artemisa'], heart:['Lavanda','Piña','Geranio'], base:['Sándalo','Cedro','Haba tonka'],
+     accords:[['Amaderado',100],['Cítrico',80],['Aromático',64],['Fresco especiado',50],['Ámbar',40]], longevity:4, sillage:4,
+     story:'Limón y menta frescos al abrir, lavanda y geranio en el corazón, y un fondo cremoso de sándalo de Nueva Caledonia y cedro. Elegante en cualquier ocasión.',
+     blurb:'Cítricos y sándalo cremoso. El elegante que funciona todo el año.'},
+    {id:'lemaleelixir', cat:'disenador', house:'Jean Paul Gaultier', name:'Le Male Elixir', conc:'Parfum', ml:125, price:129990, gender:'hombre', badge:'Bestia',
+     ar:.4441, capCut:{y:.17, x:.503, w:.2}, family:'dulce', time:'noche', seasons:['Otoño','Invierno'], moments:['noche','cita'],
+     top:['Lavanda','Menta'], heart:['Vainilla','Benjuí'], base:['Miel','Haba tonka','Tabaco'],
+     accords:[['Miel',100],['Avainillado',90],['Lavanda',74],['Dulce',70],['Tabaco',50]], longevity:5, sillage:5,
+     story:'Lavanda y menta al abrir, vainilla y benjuí en el corazón, y un fondo de miel, haba tonka y tabaco. Dulce, potente y con proyección de bestia.',
+     blurb:'Lavanda, miel y vainilla. Proyección y duración enormes.'},
+    {id:'yedp', cat:'disenador', house:'Yves Saint Laurent', name:'Y Eau de Parfum', conc:'Eau de Parfum', ml:100, price:139990, gender:'hombre', pump:'silver',
+     ar:.4277, capCut:{y:.242, x:.522, w:.348}, family:'fresco', time:'ambos', seasons:['Primavera','Otoño'], moments:['dia','cita'],
+     top:['Manzana','Jengibre','Bergamota'], heart:['Salvia','Enebro','Geranio'], base:['Amberwood','Haba tonka','Cedro','Vetiver','Olíbano'],
+     accords:[['Aromático',100],['Frutal',70],['Amaderado',66],['Fresco especiado',60],['Ámbar',44]], longevity:4, sillage:4,
+     story:'Manzana y jengibre frescos, salvia aromática en el corazón y un fondo de amberwood y haba tonka. Moderno, limpio y versátil.',
+     blurb:'Manzana, salvia y amberwood. El fresco moderno de YSL.'},
+    {id:'eros', cat:'disenador', house:'Versace', name:'Eros', conc:'Eau de Toilette', ml:100, price:89990, gender:'hombre', badge:'Precio top',
+     ar:.7223, capCut:{y:.268, x:.508, w:.233}, family:'dulce', time:'noche', seasons:['Otoño','Invierno','Primavera'], moments:['noche','cita'],
+     top:['Menta','Manzana verde','Limón'], heart:['Haba tonka','Ambroxan','Geranio'], base:['Vainilla de Madagascar','Cedro','Vetiver','Musgo de roble'],
+     accords:[['Avainillado',100],['Aromático',80],['Verde',60],['Dulce',60],['Ámbar',44]], longevity:4, sillage:4,
+     story:'Menta y manzana verde al abrir, haba tonka y ambroxan en el corazón, y un fondo de vainilla de Madagascar y cedro. Seductor, juvenil y muy reconocible.',
+     blurb:'Menta, manzana verde y vainilla. El clásico de discoteca.'},
+    {id:'ombreleather', cat:'disenador', house:'Tom Ford', name:'Ombré Leather', conc:'Eau de Parfum', ml:100, price:229990,
+     ar:.6542, capCut:{y:.22, x:.5, w:.5}, pump:'silver', family:'amaderado', time:'ambos', seasons:['Otoño','Invierno'], moments:['noche','cita'],
+     top:['Cardamomo'], heart:['Cuero','Jazmín sambac'], base:['Ámbar','Musgo','Pachulí'],
+     accords:[['Cuero',100],['Especiado',60],['Amaderado',56],['Ámbar',50],['Floral',30]], longevity:4, sillage:4,
+     story:'Cardamomo especiado al abrir, un corazón de cuero suave con jazmín y un fondo de ámbar y musgo. Inspirado en el desierto del oeste americano.',
+     blurb:'Cuero suave y cardamomo. Rudo y elegante a la vez.'},
+    /* ---------- Lorenzo Pazzaglia: todas sus líneas ---------- */
+    {...PZ, id:'pax', hero:true, name:'Pax', ar:.5127, capCut:{y:.297, x:.499, w:.413}, family:'dulce', time:'ambos', seasons:['Otoño','Invierno','Primavera'], moments:['cita','noche'], line:'Intensos',
+     top:['Cítricos','Pera','Maracuyá','Uva negra','Pimienta'], heart:['Magnolia','Jazmín','Cardamomo','Grosella negra','Incienso'], base:['Ámbar','Vainilla de Madagascar','Cuero','Almizcle blanco','Oud'],
+     accords:[['Frutal',100],['Dulce',70],['Incienso',56],['Cuero',46],['Oud',40]], longevity:5, sillage:5,
+     story:'El autorretrato de Lorenzo Pazzaglia: cítricos, maracuyá y pimienta al abrir, magnolia e incienso en el corazón, y un fondo de ámbar, cuero y oud. Muchos lo comparan con Erba Pura.',
+     blurb:'Maracuyá, incienso y oud. Frutal, intenso y con mucha estela.'},
+    {...PZ, id:'summerhammer', name:'Summer Hammer', ar:.5126, capCut:{y:.291, x:.499, w:.42}, family:'fresco', time:'día', seasons:['Verano','Primavera'], moments:['dia'], line:'Tropicales', badge:'Nuevo ingreso',
+     top:['Mango','Piña','Coco','Bergamota','Ron blanco'], heart:['Leche de coco','Notas marinas','Flores blancas'], base:['Sándalo','Ámbar','Vetiver','Almizcle'],
+     accords:[['Tropical',100],['Frutal',86],['Dulce',60],['Marino',50],['Amaderado',40]], longevity:4, sillage:4,
+     story:'Mango, piña y coco como una piña colada frente al mar, leche de coco y brisa marina en el corazón, y un fondo de sándalo cremoso. Revelación del año en los Perfume Awards de Madrid 2024.',
+     blurb:'Mango, piña y coco. Un verano eterno en extrait.'},
+    {...PZ, id:'sungria', name:'Sun-Gria', ar:.5111, capCut:{y:.284, x:.499, w:.431}, family:'fresco', time:'día', seasons:['Verano','Primavera'], moments:['dia','cita'], line:'Tropicales',
+     top:['Naranja sanguina','Limón','Jengibre','Canela'], heart:['Manzana','Grosella','Vino tinto'], base:['Vainilla','Sándalo'],
+     accords:[['Frutal',100],['Cítrico',80],['Especiado',56],['Dulce',50],['Amaderado',36]], longevity:4, sillage:4,
+     story:'Una sangría al atardecer en el Mediterráneo: naranja sanguina y jengibre, manzana y vino tinto en el corazón, y vainilla con sándalo al final. Fragancia del año 2024 en los ScentXplore Awards.',
+     blurb:'Naranja sanguina, vino tinto y especias. Verano mediterráneo.'},
+    {...PZ, id:'blacksea', name:'Black Sea', ar:.5327, capCut:{y:.254, x:.501, w:.416}, family:'fresco', time:'día', seasons:['Verano','Primavera'], moments:['dia'], line:'Marinos',
+     top:['Bergamota','Mirto de Cerdeña','Sal','Notas ozónicas'], heart:['Azahar','Sal negra de Chipre','Ylang-ylang','Notas marinas'], base:['Algas','Almizcle blanco','Pachulí','Musgo de roble','Ámbar gris'],
+     accords:[['Marino',100],['Ozónico',72],['Cítrico',50],['Floral',44],['Amaderado',40]], longevity:4, sillage:4,
+     story:'Un océano en tormenta: bergamota y mirto con sal y ozono, azahar y sal negra en el corazón, y un fondo oscuro de algas, musgo y ámbar gris.',
+     blurb:'Sal, mirto y ámbar gris. El marino oscuro de la casa.'},
+    {...PZ, id:'dreamsea', name:'Dream Sea', ar:.5126, capCut:{y:.292, x:.496, w:.425}, family:'fresco', time:'ambos', seasons:['Verano','Primavera'], moments:['dia','cita'], line:'Marinos',
+     top:['Acorde marino','Notas verdes','Pimienta negra','Pimienta rosa'], heart:['Flores blancas','Rosa búlgara','Ylang-ylang','Especias'], base:['Ámbar gris','Sal negra de Chipre','Sándalo','Cedro','Vainilla'],
+     accords:[['Marino',100],['Floral',70],['Especiado',50],['Amaderado',46],['Ozónico',40]], longevity:4, sillage:4,
+     story:'Una noche mágica en el mar: brisa salina y pimientas, flores blancas y rosa en el corazón, y un fondo de ámbar gris y sándalo bajo la luna.',
+     blurb:'Brisa marina y flores blancas. El mar de noche.'},
+    {...PZ, id:'vanpyrhum', hero:true, name:'Van Py Rhum', ar:.5147, capCut:{y:.295, x:.497, w:.418}, family:'dulce', time:'noche', seasons:['Otoño','Invierno'], moments:['noche','cita','regalo'], line:'Vainillas', badge:'Más vendido',
+     top:['Ron','Vainilla Bourbon','Vainilla de Tahití','Haba tonka'], heart:['Vainilla','Caramelo','Pachulí','Flores blancas'], base:['Vaina de vainilla negra','Ron añejo','Pachulí','Oud'],
+     accords:[['Ron',100],['Avainillado',96],['Dulce',70],['Amaderado',44],['Oud',36]], longevity:5, sillage:5,
+     story:'Gotas de ron sobre un lecho de vainillas de todo el mundo, caramelo y pachulí en el corazón, y un fondo de vaina negra y oud. El más vendido de Pazzaglia.',
+     blurb:'Ron y tres vainillas. El best seller de Lorenzo Pazzaglia.'},
+    {...PZ, id:'sugarkisses', name:'Sugar Kisses', ar:.5092, capCut:{y:.287, x:.503, w:.439}, family:'dulce', time:'ambos', seasons:['Otoño','Invierno'], moments:['cita','regalo'], line:'Gourmand',
+     top:['Manteca de cacao','Leche','Heliotropo','Frangipani','Piel de naranja'], heart:['Vainilla','Chocolate','Coco','Avellana','Dátiles'], base:['Toffee','Caramelo','Azúcar morena','Almizcle blanco','Benjuí'],
+     accords:[['Dulce',100],['Cacao',80],['Avainillado',76],['Caramelo',66],['Almizclado',36]], longevity:5, sillage:4,
+     story:'Creado como regalo para Sveva en su octavo cumpleaños: leche y cacao, chocolate y avellana, toffee y azúcar morena. Un abrazo dulce de infancia.',
+     blurb:'Chocolate, avellana y toffee. Gourmand puro.'},
+    {...PZ, id:'pinkmilk', name:'Pink Milk', ar:.5215, capCut:{y:.287, x:.489, w:.351}, family:'dulce', time:'ambos', seasons:['Primavera','Otoño'], moments:['cita','regalo'], line:'Gourmand', gender:'mujer',
+     top:['Pomelo rosado','Limón','Pimienta rosa','Canela','Rosa'], heart:['Rosa de Damasco','Peonía','Galleta','Almendra','Lichi','Frambuesa','Coco'], base:['Crema de leche','Vainilla','Almizcle blanco','Sándalo','Haba tonka'],
+     accords:[['Dulce',100],['Rosa',76],['Frutal',66],['Avainillado',60],['Almizclado',40]], longevity:4, sillage:4,
+     story:'Pomelo rosado y pimienta rosa al abrir, rosas, galleta y frambuesa en el corazón, y un fondo de crema de leche y vainilla. Fresco al principio, cremoso al final.',
+     blurb:'Rosa, frambuesa y crema de leche. Dulce y romántico.'},
+    {...PZ, id:'ginfusion', name:'Gin Fusion', ar:.5189, capCut:{y:.287, x:.491, w:.356}, family:'fresco', time:'día', seasons:['Verano','Primavera'], moments:['dia'], line:'Frescos',
+     top:['Limón','Naranja dulce','Mandarina','Bergamota','Menta','Lima','Yuzu'], heart:['Enebro','Acorde de gin','Té verde','Mate'], base:['Maderas','Vetiver','Cardamomo','Musgo de roble','Ámbar'],
+     accords:[['Cítrico',100],['Aromático',76],['Verde',60],['Amaderado',44],['Fresco especiado',40]], longevity:3, sillage:4,
+     story:'Un gin lemon en extrait: siete cítricos con menta, enebro y té verde en el corazón, y un fondo de vetiver, cardamomo y musgo.',
+     blurb:'Cítricos, enebro y té verde. El más fresco de la casa.'},
+    {...PZ, id:'bloodysmoke', name:'Bloody Smoke', ar:.5317, capCut:{y:.257, x:.504, w:.414}, family:'ambar', time:'noche', seasons:['Otoño','Invierno'], moments:['noche'], line:'Intensos',
+     top:['Notas minerales','Elemi','Jazmín','Lirio de los valles'], heart:['Incienso','Olíbano','Haba tonka','Notas metálicas'], base:['Almizcle','Sándalo','Ámbar gris','Vainilla','Mirra'],
+     accords:[['Incienso',100],['Ahumado',76],['Ámbar',60],['Especiado',50],['Amaderado',44]], longevity:5, sillage:4,
+     story:'Una batalla épica: notas minerales y elemi al abrir, incienso con matices metálicos en el corazón, y un fondo de sándalo, mirra y ámbar gris.',
+     blurb:'Incienso, mirra y notas metálicas. Oscuro y audaz.'},
+  ].map(base));
+  /* categoría de los perfumes que ya estaban */
+  const CAT = {erbapura:'nicho', naxos:'nicho', torino21:'nicho', torino22:'nicho', erbagold:'nicho', alexandria2:'nicho', gosroyale:'nicho',
+    amberoudgold:'arabe', aquadubai:'arabe', amberoudbleu:'arabe', '9pm':'arabe'};
+  const HERO = ['erbapura', 'naxos', 'gosroyale', 'amberoudgold', 'aquadubai'];
+  window.AU_PRODUCTS.forEach(p => { if (!p.cat) p.cat = CAT[p.id] || 'nicho'; if (HERO.includes(p.id)) p.hero = true; });
+})();
+
+/* Contacto de la tienda: número de WhatsApp de Nico con código de país, solo dígitos (ej. '56912345678').
+   Vacío = el pedido se abre en WhatsApp para elegir el contacto. */
+window.AU_CONTACT = {whatsapp:''};
+
+/* unisex perfumes lean feminine (f), masculine (m) or both: decides which "Para ellas / Para ellos" collection shows them */
+window.AU_LEAN = {
+  erbapura:'f', gosroyale:'f', erbagold:'f', pax:'f', sungria:'f', dreamsea:'f', sugarkisses:'f',
+  amberoudgold:'fm', aquadubai:'fm', br540:'fm', angelsshare:'fm', summerhammer:'fm', vanpyrhum:'fm',
+  naxos:'m', amberoudbleu:'m', torino21:'m', torino22:'m', alexandria2:'m', oudgreatness:'m', oudwood:'m', tobaccovanille:'m',
+  ombreleather:'m', blacksea:'m', ginfusion:'m', bloodysmoke:'m',
+};
+window.AU_forGender = (p, g) => !g || p.gender === g ||
+  (g !== 'unisex' && p.gender === 'unisex' && (window.AU_LEAN[p.id] || 'fm').includes(g === 'mujer' ? 'f' : 'm'));
+
+window.AU_CATEGORIES = {nicho:'Nicho', lujo:'Alta perfumería', disenador:'Diseñador', arabe:'Árabes'};
+
+window.AU_HOUSES = [
+  {name:'Xerjoff', city:'Turín', year:2003, text:'Lujo italiano sin moderación: materias primas raras, frascos de cristal y una proyección legendaria.'},
+  {name:'Lorenzo Pazzaglia', city:'Italia', mark:'LP', text:'Perfumista autodidacta italiano. Extraits atrevidos y llenos de color, del mar a la vainilla y el ron.'},
+  {name:'Creed', city:'Londres · París', year:1760, text:'Casa de perfumería con más de dos siglos de historia. Aventus es su leyenda moderna.'},
+  {name:'Parfums de Marly', city:'París', year:2009, text:'Inspirada en las fiestas ecuestres de Luis XV en el castillo de Marly. Layton y Delina son íconos.'},
+  {name:'Maison Francis Kurkdjian', city:'París', year:2009, text:'La casa del perfumista Francis Kurkdjian. Baccarat Rouge 540 cambió la perfumería moderna.'},
+  {name:'Initio Parfums Privés', city:'París', year:2015, text:'Perfumes que exploran el poder de la atracción, con materias primas naturales e intensas.'},
+  {name:'Amouage', city:'Mascate · Omán', year:1983, text:'La casa real de Omán. Inciensos, ámbares y una calidad de composición excepcional.'},
+  {name:'Clive Christian', city:'Londres', year:1999, text:'Alta perfumería británica con algunos de los perfumes más caros del mundo.'},
+  {name:'Roja Parfums', city:'Londres', year:2011, text:'Roja Dove, maestro perfumista, crea alta perfumería con concentraciones extraordinarias.'},
+  {name:'Kilian Paris', city:'París', year:2007, text:'Lujo, frascos de colección y perfumes inspirados en el coñac, la noche y el deseo.'},
+  {name:'Tom Ford', city:'Nueva York', year:2006, text:'Private Blend llevó el oud y el tabaco al lujo moderno. Diseño impecable y estela elegante.'},
+  {name:'Al Haramain', city:'La Meca · Dubái', year:1970, text:'Casa familiar árabe con más de cincuenta años. Su línea Amber Oud es de las más buscadas del mundo.'},
+  {name:'Jo Milano Paris', city:'París · Nueva York', year:2018, text:'La colección Game of Spades: perfumes de alta concentración inspirados en el juego y la suerte.'},
+  {name:'Afnan', city:'Emiratos Árabes', year:2007, text:'Perfumería árabe moderna con calidad de nicho. 9PM se volvió un fenómeno mundial.'},
+];
+
+/* Clientes: capturas del destacado "Tienda" de Instagram. Solo se usa lo que está escrito en cada historia
+   (@ etiquetados, textos y ubicación) y el club según camiseta o texto. club:null = no se distingue con certeza. */
+window.AU_CLUBS = ['Universidad de Chile', 'Universidad Católica', 'Everton', 'Santiago Wanderers', 'Huachipato'];
+window.AU_CLIENTS = [
+  {img:'img/clientes/entrega-05.jpg', club:'Universidad de Chile', tag:'@titoformiliano', note:'Agradecido siempre', place:'Centro Deportivo Azul'},
+  {img:'img/clientes/entrega-01.jpg', club:'Huachipato', tag:'@santisilvaa5', note:'Xerjoff Erba Pura'},
+  {img:'img/clientes/entrega-03.jpg', club:'Universidad de Chile', note:'El plantel eligiendo su perfume'},
+  {img:'img/clientes/entrega-12.jpg', club:'Santiago Wanderers', tag:'@paulgaticav', note:'Set de regalo'},
+  {img:'img/clientes/entrega-15.jpg', club:'Universidad Católica', note:'Hoy fue Universidad Católica', place:'Hotel Pullman, Vitacura'},
+  {img:'img/clientes/entrega-02.jpg', club:null, tag:'@salvadorm14', note:'Xerjoff Erba Pura'},
+  {img:'img/clientes/entrega-16.jpg', club:'Everton', note:'Hoy fue plantel de Everton', place:'Novotel Santiago Las Condes'},
+  {img:'img/clientes/entrega-04.jpg', club:'Universidad de Chile', note:'Xerjoff 1861', place:'Centro Deportivo Azul'},
+  {img:'img/clientes/entrega-09.jpg', club:'Santiago Wanderers', note:'Xerjoff Erba Pura'},
+  {img:'img/clientes/entrega-13.jpg', club:'Universidad de Chile', note:'Mi hermano', place:'Hotel Manquehue Aeropuerto'},
+  {img:'img/clientes/entrega-17.jpg', club:'Huachipato', note:'Entrega en el hotel', place:'Hotel Diego de Almagro Aeropuerto'},
+  {img:'img/clientes/entrega-10.jpg', club:'Santiago Wanderers', note:'Dos fragancias nuevas'},
+  {img:'img/clientes/entrega-14.jpg', club:'Universidad de Chile', note:'Prueba antes de elegir'},
+  {img:'img/clientes/entrega-11.jpg', club:'Santiago Wanderers', note:'Edición especial'},
+  {img:'img/clientes/entrega-06.jpg', club:null, note:'Probando la colección en el hotel'},
+  {img:'img/clientes/entrega-07.jpg', club:null, note:'Doble compra', place:'Hotel Plaza El Bosque'},
+  {img:'img/clientes/entrega-08.jpg', club:null, note:'Entrega en concentración'},
+];
+
+/* Hero: escenas con frascos reales sobre travertino. block = [ancho relativo, alto del bloque en %], h = alto del frasco en % */
+window.AU_SLIDES = [
+  {kicker:'Xerjoff · Turín', title:['Colección', 'italiana'], main:'erbapura', cta:'Ver perfumes Xerjoff', filter:{q:'Xerjoff'},
+   text:'Erba Pura y Naxos, originales y sellados.',
+   bottles:[{id:'naxos', h:64, block:[1, 18]}, {id:'erbapura', h:62, block:[1, 30]}]},
+  {kicker:'Al Haramain · Amber Oud', title:['Ámbar que dura', 'todo el día'], main:'amberoudgold', cta:'Ver la línea Amber Oud', filter:{q:'Amber Oud'},
+   text:'Gold Edition, Aqua Dubai y Bleu Edition: la línea árabe más buscada.',
+   bottles:[{id:'aquadubai', h:50, block:[1, 16]}, {id:'amberoudgold', h:55, block:[1, 28]}, {id:'amberoudbleu', h:50, block:[1, 20]}]},
+  {kicker:'Para la noche', title:['Perfumes que', 'se recuerdan'], main:'9pm', cta:'Ver dulces e intensos', filter:{family:'dulce'},
+   text:'Afnan 9PM y Game of Spades Royale: dulces, intensos y con estela.',
+   bottles:[{id:'9pm', h:58, block:[1, 30]}, {id:'gosroyale', h:62, block:[1, 18]}]},
+];
+
+/* Momentos: cada perfume declara en "moments" las ocasiones donde mejor funciona */
+window.AU_MOMENTS = [
+  {id:'noche', tone:'night', title:'Para salir de noche', text:'Dulces, intensos y con estela, para cuando la noche se alarga.'},
+  {id:'cita', tone:'rose', title:'Para una cita', text:'Cálidos y cercanos: los que hacen que te pregunten qué llevas.'},
+  {id:'dia', tone:'day', title:'Para el día y la oficina', text:'Frescos y limpios, fáciles de llevar con calor.'},
+  {id:'regalo', tone:'gold', title:'Para regalar', text:'Los que nunca fallan, en su caja original sellada.'},
+];
+
+/* Familias olfativas (fotos de ingredientes: Unsplash). accords = acordes que definen la familia */
+window.AU_SCENTS = [
+  {id:'frutales', title:'Frutales', img:'img/familias/frutales.jpg', accords:['Frutal', 'Tropical'],
+   keys:['piña', 'manzana', 'pera', 'mango', 'lichi', 'melon', 'grosella', 'frambuesa', 'maracuya', 'uva', 'fruta', 'coco', 'datil', 'ruibarbo', 'ciruela', 'vino']},
+  {id:'citricas', title:'Cítricas', img:'img/familias/citricas.jpg', accords:['Cítrico'],
+   keys:['bergamota', 'limon', 'lima', 'naranja', 'mandarina', 'pomelo', 'yuzu', 'citric', 'verbena', 'azahar']},
+  {id:'amaderadas', title:'Amaderadas', img:'img/familias/amaderadas.jpg', accords:['Amaderado', 'Oud', 'Cuero', 'Incienso', 'Tabaco'],
+   keys:['cedro', 'sandalo', 'vetiver', 'oud', 'pachuli', 'guayaco', 'abedul', 'palisandro', 'madera', 'roble', 'musgo', 'cuero', 'incienso', 'olibano', 'tabaco']},
+  {id:'dulces', title:'Dulces y avainilladas', img:'img/familias/dulces.jpg', accords:['Dulce', 'Avainillado', 'Caramelo', 'Miel', 'Cacao', 'Coñac', 'Ron'],
+   keys:['vainilla', 'caramelo', 'miel', 'cacao', 'chocolate', 'praline', 'tonka', 'toffee', 'azucar', 'benjui', 'galleta', 'crema', 'leche', 'avellana', 'ron', 'coñac']},
+];
+/* how much a family "rules" a perfume, from its real notes: top notes count most when they open with it,
+   and the main accord adds weight. Used by the families grid and the catalog filter. */
+window.AU_scentScore = (p, f) => {
+  const n = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  const hits = list => list.filter(note => f.keys.some(k => n(note).includes(n(k)))).map(note => note.toLowerCase());
+  const matched = [...hits(p.top), ...hits(p.heart), ...hits(p.base)];
+  const lead = f.accords.includes(p.accords[0][0]) ? 3 : f.accords.includes((p.accords[1] || [])[0]) ? 1.5 : 0;
+  return {score:matched.length + lead, notes:[...new Set(matched)]};
+};

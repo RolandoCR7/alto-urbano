@@ -1,0 +1,46 @@
+/* =====================================================================
+   FOOTER 2 — limpio: asesoría, logo, enlaces, confianza y pagos
+   ===================================================================== */
+.f2{background:#080706;border-top:1px solid rgba(201,164,76,.22)}
+.f2 .foot-word,.f2 .foot-cta,.f2 .foot-main,.f2 .foot-strip{display:none}
+/* help band */
+.f2-help{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px 48px;
+  margin:clamp(40px,7vh,72px) var(--gutter) 0;padding:clamp(26px,3.4vw,46px) clamp(24px,3.4vw,52px);border-radius:20px;
+  background:radial-gradient(ellipse 60% 140% at 100% 0%,rgba(201,164,76,.18),transparent 60%),linear-gradient(160deg,#16130E,#0C0A08);
+  border:1px solid rgba(201,164,76,.3)}
+.f2-help .eyebrow{margin-bottom:12px}
+.f2-help h2{font-family:Cinzel,serif;font-weight:400;font-size:clamp(28px,3vw,46px);line-height:1.05;color:#F3EBDB;margin:0 0 10px}
+.f2-help h2 em{font-family:"Cormorant Garamond",serif;font-style:italic;font-weight:400;font-size:1.1em;background:var(--gold-foil);-webkit-background-clip:text;background-clip:text;color:transparent}
+.f2-help-copy > p:last-child{margin:0;max-width:52ch;color:#B3A88F;font-size:15px}
+.f2-help-actions{display:flex;flex-wrap:wrap;gap:10px}
+/* main grid */
+.f2-main{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,2fr) minmax(0,1fr);gap:clamp(28px,4vw,64px);
+  padding:clamp(50px,8vh,80px) var(--gutter) clamp(36px,6vh,56px)}
+.f2-logo{width:min(220px,70%);height:auto;margin-bottom:18px}
+.f2-brand p{margin:0 0 20px;color:#9E937D;font-size:14.5px;line-height:1.7;max-width:34ch}
+.f2-cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.f2-cols h3{font-family:Jost,sans-serif;font-weight:500;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:#C9A44C;margin:6px 0 18px}
+.f2-cols ul{list-style:none;margin:0;padding:0;display:grid;gap:11px}
+.f2-cols a{color:#CFC5B0;text-decoration:none;font-size:14.5px;transition:color .3s}
+.f2-cols a:hover{color:#E9D39A}
+.f2-trust{display:grid;justify-items:start;gap:18px}
+.f2-trust .foot-seal{width:104px}
+.f2-trust ul{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.f2-trust li{display:grid;gap:1px;padding-left:16px;border-left:1px solid rgba(201,164,76,.35)}
+.f2-trust b{font-family:Cinzel,serif;font-weight:400;font-size:14px;color:#F3EBDB}
+.f2-trust span{font-size:12.5px;color:#8E846F}
+/* bottom bar */
+.f2-bottom{display:flex;flex-wrap:wrap;align-items:center;gap:12px 28px;margin:0 var(--gutter);padding:20px 0 26px;border-top:1px solid rgba(201,164,76,.16);font-size:12.5px;color:#7A705F}
+.f2-bottom p{margin:0}
+.f2-bottom .pay li{font-size:12px;padding:3px 10px;border-radius:4px}
+.f2-bottom .credit{margin-left:auto}
+.f2-bottom .to-top{font-size:13px}
+@media (max-width:1000px){.f2-main{grid-template-columns:1fr 1fr}.f2-cols{grid-column:1/-1;order:3}}
+@media (max-width:620px){
+  .f2-main{grid-template-columns:1fr}
+  .f2-cols{grid-template-columns:1fr 1fr}
+  .f2-cols > div:last-child{grid-column:1/-1}
+  .f2-help-actions .btn{flex:1 1 100%}
+  .f2-bottom{padding-bottom:96px}
+  .f2-bottom .credit{margin-left:0}
+}

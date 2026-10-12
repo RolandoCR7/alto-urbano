@@ -1,0 +1,135 @@
+/* =====================================================================
+   TIENDA — categorías, compra rápida y carrito con checkout
+   ===================================================================== */
+/* category tabs */
+.cat-tabs{display:flex;gap:0;margin:0 0 18px;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
+.cat-tabs::-webkit-scrollbar{display:none}
+.ctab{flex:none;background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;padding:12px 18px 13px;
+  font-family:Cinzel,serif;font-size:clamp(14px,1.15vw,17px);letter-spacing:.06em;color:var(--ivory-dim);transition:color .3s,border-color .3s}
+.ctab sup{font-family:Jost,sans-serif;font-size:10px;letter-spacing:.1em;margin-left:5px;color:var(--gold)}
+.ctab:hover{color:var(--ivory)}
+.ctab[aria-pressed="true"]{color:var(--ivory);border-bottom-color:var(--gold)}
+
+/* quick buy on cards */
+.qa{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--line-strong)}
+.qa button{background:none;border:0;padding:8px 2px;font-family:Jost,sans-serif;font-size:11px;letter-spacing:.08em;color:var(--ivory-dim);transition:background .25s,color .25s}
+.qa button + button{border-left:1px solid var(--line-strong)}
+.qa button:hover{color:var(--ivory)}
+.qa button[aria-pressed="true"]{background:var(--gold-foil);color:#0A0907;font-weight:600}
+.card-foot .btn.added{background:#1d3b2a;border-color:#3c7a55;color:#d9f2e2}
+.card-foot .btn.added::after{display:none}
+.room-white .qa button[aria-pressed="true"]{color:#14110D}
+
+/* flying bottle */
+.flyer{position:fixed;z-index:160;pointer-events:none;width:auto;filter:drop-shadow(-8px 14px 12px rgba(0,0,0,.6));transform-origin:50% 50%}
+
+/* drawer */
+.drawer{width:min(480px,100%);padding:max(20px,env(safe-area-inset-top)) 0 0;background:#0E0C0A}
+.drawer-head{padding:0 24px;margin-bottom:12px}
+.drawer-head h2{font-size:24px;font-weight:400;color:#F3EBDB}
+.steps{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:0 24px 14px;padding:0;counter-reset:st}
+.steps li{counter-increment:st;font-family:Jost,sans-serif;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#6f6656;padding-top:8px;border-top:2px solid rgba(201,164,76,.18);transition:color .4s,border-color .4s}
+.steps li::before{content:counter(st) ". "}
+.steps li.on{color:#E9D39A;border-top-color:#C9A44C}
+.dstep{display:flex;flex-direction:column;flex:1;min-height:0}
+.dstep[hidden]{display:none}
+.dscroll{flex:1;overflow:auto;padding:0 24px;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:rgba(201,164,76,.4) transparent}
+.ship{padding:0 24px;font-size:14px}
+.drawer-foot{padding:16px 24px max(18px,env(safe-area-inset-bottom));border-top:1px solid rgba(201,164,76,.3);background:#0B0A08;display:grid;gap:8px}
+.sum{display:flex;justify-content:space-between;font-size:14px;color:#B3A88F}
+.drawer .total{margin:4px 0 8px;font-size:22px;font-weight:400}
+.drawer .total span:last-child{color:#E9D39A}
+.drawer-foot .btn{width:100%}
+.btn:disabled::after{display:none}
+.secure{display:flex;align-items:center;justify-content:center;gap:8px;margin:2px 0 0;font-size:12px;color:#7A705F}
+.secure svg{width:14px;height:14px;fill:none;stroke:#C9A44C;stroke-width:1.5}
+.foot-row{display:grid;grid-template-columns:auto 1fr;gap:10px}
+.foot-row .btn.small{width:auto}
+
+/* cart lines */
+.line-item{grid-template-columns:64px 1fr auto;gap:0 14px;align-items:start;padding:16px 0}
+.line-item .thumb{grid-row:auto;width:64px;height:84px;display:grid;place-items:center;background:radial-gradient(ellipse at 50% 40%,rgba(255,224,165,.14),transparent 70%),#15120E;border:1px solid rgba(201,164,76,.14)}
+.line-item .thumb img{max-height:72px;max-width:52px;width:auto;filter:drop-shadow(-3px 6px 5px rgba(0,0,0,.6))}
+.line-item .kit-thumb img{height:46px;max-width:none;margin:0 -5px}
+.li-main{display:grid;gap:3px;min-width:0}
+.li-main .li-house{font-family:Jost,sans-serif;font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;color:#C9A44C}
+.li-main b{font-family:Cinzel,serif;font-weight:400;font-size:16px;color:#F3EBDB;line-height:1.15}
+.li-main small{font-size:13px;color:#8E846F;grid-column:auto}
+.li-size{margin-top:4px;background:#14110D;border:1px solid rgba(201,164,76,.3);color:#E9E0CC;font-size:12.5px;padding:6px 8px;max-width:100%}
+.li-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:6px}
+.line-item .qty{grid-row:auto;grid-column:auto;gap:0;border:1px solid rgba(201,164,76,.3)}
+.line-item .qty button{width:30px;height:28px;border:0;border-radius:0}
+.line-item .qty span{min-width:26px;text-align:center;font-size:14px}
+.li-price{font-family:Cinzel,serif;color:#E9D39A;font-size:15px}
+.li-remove{background:none;border:0;color:#6f6656;font-size:22px;line-height:1;padding:0 2px;transition:color .3s}
+.li-remove:hover{color:#E9D39A}
+.lines .empty{display:grid;gap:10px;justify-items:center;text-align:center;padding:48px 10px;font-style:normal;color:#8E846F}
+.lines .empty b{font-family:Cinzel,serif;font-weight:400;font-size:18px;color:#F3EBDB}
+
+/* upsell */
+.upsell{padding:6px 0 18px}
+.up-title{margin:6px 0 10px;font-family:Jost,sans-serif;font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:#C9A44C}
+.up-row{display:grid;gap:8px}
+.up{display:grid;grid-template-columns:40px 1fr auto;align-items:center;gap:12px;background:#13110D;border:1px solid rgba(201,164,76,.14);padding:8px 12px;text-align:left;color:#E9E0CC;transition:border-color .3s}
+.up:hover{border-color:#C9A44C}
+.up img{height:44px;width:auto;justify-self:center}
+.up b{display:block;font-family:Cinzel,serif;font-weight:400;font-size:14px}
+.up small{font-size:12.5px;color:#8E846F}
+.up i{font-style:normal;width:26px;height:26px;display:grid;place-items:center;border:1px solid rgba(201,164,76,.45);color:#E9D39A}
+
+/* checkout form */
+#checkoutForm fieldset{border:0;margin:0 0 18px;padding:0;display:grid;gap:10px}
+#checkoutForm legend{font-family:Jost,sans-serif;font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:#C9A44C;margin-bottom:10px;padding:0}
+#checkoutForm label{display:grid;gap:5px;font-size:12.5px;color:#B3A88F}
+#checkoutForm input:not([type=radio]),#checkoutForm select,#checkoutForm textarea{width:100%;background:#13110D;border:1px solid rgba(201,164,76,.28);color:#F3EBDB;font:inherit;font-size:15px;padding:11px 12px;border-radius:0}
+#checkoutForm input:focus,#checkoutForm select:focus,#checkoutForm textarea:focus{outline:none;border-color:#E9D39A}
+#checkoutForm input::placeholder,#checkoutForm textarea::placeholder{color:#5f574a}
+.addr{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.addr[hidden]{display:none}
+.addr .wide{grid-column:1/-1}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.opt-r{position:relative;cursor:pointer}
+.opt-r input{position:absolute;opacity:0;pointer-events:none}
+.opt-r span{display:grid;gap:2px;padding:11px 12px;border:1px solid rgba(201,164,76,.22);background:#13110D;transition:border-color .3s,background .3s}
+.opt-r b{font-family:Cinzel,serif;font-weight:400;font-size:13.5px;color:#F3EBDB}
+.opt-r small{font-size:12px;color:#8E846F}
+.opt-r input:checked + span{border-color:#C9A44C;background:rgba(201,164,76,.1);box-shadow:inset 0 0 0 1px #C9A44C}
+.opt-r input:focus-visible + span{outline:1.5px solid #E9D39A;outline-offset:2px}
+.form-msg{min-height:1.4em;margin:0 0 10px;color:#f0a58a;font-size:13.5px}
+
+/* done */
+.done{text-align:center;padding-top:20px}
+.done-mark svg{width:72px;height:72px;margin:0 auto 14px;fill:none;stroke:#C9A44C;stroke-width:1.6}
+.done-mark path{stroke-dasharray:40;stroke-dashoffset:0;stroke:#E9D39A;stroke-width:2.2}
+.done h3{font-weight:400;font-size:26px;color:#F3EBDB;margin-bottom:6px}
+.done p{color:#B3A88F;font-size:14.5px;margin:0 0 14px}
+.done .order-id{font-family:Cinzel,serif;color:#E9D39A;letter-spacing:.06em}
+.order-sum{list-style:none;margin:16px 0 0;padding:0;text-align:left;border-top:1px solid rgba(201,164,76,.2)}
+.order-sum li{padding:10px 0;border-bottom:1px solid rgba(201,164,76,.1);font-size:13.5px;color:#D9CFBB}
+@media (max-width:420px){.opts{grid-template-columns:1fr}.addr{grid-template-columns:1fr}}
+
+/* casas: 14 tarjetas más compactas y miniaturas que nunca salen de su tarjeta */
+.house-card{width:min(80vw,400px);min-height:min(56vh,460px);padding:clamp(22px,2.4vw,32px);overflow:hidden}
+.house-card .year{font-size:clamp(40px,4.4vw,72px)}
+.house-card h3{font-size:clamp(22px,2vw,30px);margin-top:12px}
+.house-card p{font-size:14.5px}
+.hc-minis{flex-wrap:wrap;overflow:visible;row-gap:30px;column-gap:10px;padding-bottom:22px;min-height:0}
+.hc-minis.many .hc-mini img{height:58px}
+.hc-mini span{top:auto;bottom:calc(100% + 6px);z-index:2;background:rgba(8,7,5,.92);padding:3px 7px;border:1px solid rgba(201,164,76,.35)}
+
+/* kit: una categoría a la vez en una fila deslizable */
+.kit-pick{display:block}
+.kit-tabs{display:flex;gap:0;margin:0 0 14px;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
+.kit-tabs::-webkit-scrollbar{display:none}
+.ktab{flex:none;background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;padding:10px 14px;font-family:Cinzel,serif;font-size:14px;letter-spacing:.04em;color:var(--ivory-dim);transition:color .3s,border-color .3s}
+.ktab sup{font-family:Jost,sans-serif;font-size:9.5px;margin-left:4px;color:var(--gold)}
+.ktab[aria-pressed="true"]{color:var(--ivory);border-bottom-color:var(--gold)}
+.kit-strip-wrap{position:relative}
+.kit-strip{display:grid;grid-auto-flow:column;grid-auto-columns:clamp(132px,13vw,160px);grid-template-rows:repeat(2,auto);gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 2px 12px;scrollbar-width:thin;scrollbar-color:rgba(154,116,38,.5) transparent}
+.kit-strip .kit-tile{scroll-snap-align:start}
+.kit-strip .kit-tile img{height:96px}
+.kit-arrow{position:absolute;top:50%;z-index:2;width:38px;height:38px;transform:translateY(-50%);border:1px solid var(--line-strong);background:rgba(251,249,245,.92);color:var(--ivory);font-size:22px;line-height:1;display:grid;place-items:center}
+.kit-arrow.prev{left:-14px}
+.kit-arrow.next{right:-14px}
+@media (hover:none),(max-width:700px){.kit-arrow{display:none}.kit-strip{grid-template-rows:auto}}
+.kit-layout > *{min-width:0}
